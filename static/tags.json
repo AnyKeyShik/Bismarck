@@ -65,27 +65,5 @@
         "Suzumia": "suzumiya_haruhi",
         "Судзумия": "suzumiya_haruhi",
         "богиня": "suzumiya_haruhi"
-    },
-    "ratings": {
-        "хентай": "explicit",
-        "этти": "questionable",
-        "": "safe"
-    },
-    "commands": {
-        "что скажешь про": "about",
-        "расскажи про": "about",
-        "что думаешь об": "about",
-        "привет": "hello",
-        "хай": "hello"
-    },
-    "ignored": [
-        "и",
-        "в",
-        "на",
-        "при",
-        "с",
-        "со",
-        "по",
-        "a"
-    ]
+    }
 }

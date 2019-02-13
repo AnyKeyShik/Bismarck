@@ -2,23 +2,23 @@
 
 import requests
 
-from utils.logger import class_construct, log_func, debug, info
+from utils.logger import class_construct, log_func, debug, info, DEBUG_LOG
 
 
 class KonachanGrabber(object):
-    r"""
+    """
     Grabber picture for http://konachan.com/
     """
 
-    __url = None
+    _url = None
 
     @class_construct
     def __init__(self):
-        self.__url = "http://konachan.com/post.json?tags=%s+rating:%s+order:random&limit=1"
+        self._url = "http://konachan.com/post.json?tags=%s+rating:%s+order:random&limit=1"
 
-    @log_func(is_debug=True)
+    @log_func(log_write=DEBUG_LOG)
     def get_picture(self, tags, rating):
-        r"""
+        """
         Get picture from Konachan
 
         :param tags: tags of picture
@@ -27,7 +27,7 @@ class KonachanGrabber(object):
         :rtype: (str, str)
         """
 
-        url = self.__url % (tags, rating)
+        url = self._url % (tags, rating)
 
         debug("Get url: " + str(url))
 

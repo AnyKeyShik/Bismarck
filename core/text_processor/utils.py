@@ -2,12 +2,12 @@
 
 import re
 
-from utils.logger import log_func, debug
+from utils.logger import log_func, debug, DEBUG_LOG
 
 
-@log_func(is_debug=True)
+@log_func(log_write=DEBUG_LOG)
 def distance(str1, str2):
-    r"""
+    """
     Calculates the Levenshtein distance between two strings.
 
     :param str1: first string
@@ -37,9 +37,9 @@ def distance(str1, str2):
     return current_column[n]
 
 
-@log_func(is_debug=True)
+@log_func(log_write=DEBUG_LOG)
 def prepare_msg(raw_message):
-    r"""
+    """
     Prepare user message for processing
 
     :param raw_message: raw user message

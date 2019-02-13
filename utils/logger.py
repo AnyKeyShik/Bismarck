@@ -1,29 +1,33 @@
 # -*- coding: utf-8 -*-
 
+import datetime
 import logging
 import os
 
 # Constants for logging
-__log_message_format = '%(levelname)s - %(asctime)-10s %(message)s'
-__message_format = 'Message "%s" from "%s" with answer "%s"'
-__message_log_filename = os.path.join(os.path.dirname(__file__), "../logs/bismark." + __name__.split('.')[0] + ".log")
+_log_message_format = '%(levelname)s - %(asctime)-10s %(message)s'
+_message_format = 'Message "%s" from "%s" with answer "%s"'
+_message_log_filename = os.path.join(os.path.dirname(__file__), "../logs/bismark_" +
+                                     datetime.datetime.now().strftime("%Y_%m_%d_%H-%M-%S") + ".log")
 
 # Init logging
-logging.basicConfig(format=__log_message_format, filename=__message_log_filename, filemode="w", level=logging.DEBUG)
+logging.basicConfig(format=_log_message_format, filename=_message_log_filename, filemode="w", level=logging.DEBUG)
+
+DEBUG_LOG = True
 
 
-def log_func(is_debug=False):
-    r"""
+def log_func(log_write=False):
+    """
     Decorator for log function name
 
-    :param is_debug: if True write in debug-log, else in info-log
+    :param log_write: if True write in debug-log, else in info-log
     :return: decorator
     """
 
     def decorator(func):
         def wrapper(*args, **kwargs):
 
-            if is_debug:
+            if log_write:
                 logging.debug("-" * 3 + ">" + func.__name__ + "()")
             else:
                 logging.info("-" * 3 + ">" + func.__name__ + "()")
@@ -36,7 +40,7 @@ def log_func(is_debug=False):
 
 
 def class_construct(init):
-    r"""
+    """
     Decorator for log class init in info-log
 
     :param init: class __init__
@@ -51,7 +55,7 @@ def class_construct(init):
 
 
 def debug(message):
-    r"""
+    """
     Write in debug-log
 
     :param message: message for write
@@ -62,7 +66,7 @@ def debug(message):
 
 
 def info(message):
-    r"""
+    """
     Write in info-log
 
     :param message: message for write
@@ -73,7 +77,7 @@ def info(message):
 
 
 def error(message):
-    r"""
+    """
     Write in error-log
 
     :param message: message for write
@@ -84,7 +88,7 @@ def error(message):
 
 
 def critical(message):
-    r"""
+    """
     Write in critical-log
 
     :param message: message for write
@@ -95,7 +99,7 @@ def critical(message):
 
 
 def log_message(message, user, answer):
-    r"""
+    """
     Write bot message for send in info-log
 
     :param message: user message text
@@ -104,4 +108,4 @@ def log_message(message, user, answer):
     :return: None
     """
 
-    logging.info(__message_format % (message, user, answer))
+    logging.info(_message_format % (message, user, answer))

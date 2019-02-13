@@ -1,15 +1,20 @@
 # -*- coding: utf-8 -*-
 
-import socks
 import socket
 
+import socks
 
+from utils.logger import DEBUG_LOG, log_func
+
+
+@log_func(log_write=DEBUG_LOG)
 def create_connection(address):
-    r"""
+    """
     Create connection with custom sock
 
     :param address: address for connection
     :return: connection sock
+    :rtype: socks.socksocket
     """
 
     sock = socks.socksocket()
@@ -17,9 +22,30 @@ def create_connection(address):
     return sock
 
 
-# Config tor-proxy
-socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", 9050)
+@log_func(log_write=DEBUG_LOG)
+def config(ip, port):
+    """
+    Config tor-proxy
 
-# Patch the socket module
-socket.socket = socks.socksocket
-socket.create_connection = create_connection
+    :param ip: proxy ip
+    :param port: proxy port
+    :return: None
+    :rtype: None
+    """
+
+    socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, ip, port)
+
+
+@log_func(log_write=DEBUG_LOG)
+def patch():
+    """
+    Patch the socket module
+
+    :return: None
+    :rtype: None
+    """
+
+    config("127.0.0.1", 9050)
+
+    socket.socket = socks.socksocket
+    socket.create_connection = create_connection

@@ -2,23 +2,23 @@
 
 import requests
 
-from utils.logger import class_construct, log_func, info, debug
+from utils.logger import class_construct, log_func, info, debug, DEBUG_LOG
 
 
 class YandereGrabber(object):
-    r"""
+    """
     Picture grabber for http://yande.re/
     """
 
-    __url = None
+    _url = None
 
     @class_construct
     def __init__(self):
-        self.__url = "https://yande.re/post.json?tags=%s+rating:%s+order:random&limit=1"
+        self._url = "https://yande.re/post.json?tags=%s+rating:%s+order:random&limit=1"
 
-    @log_func(is_debug=True)
+    @log_func(log_write=DEBUG_LOG)
     def get_picture(self, tags, rating):
-        r"""
+        """
         Get picture from Yandere
 
         :param tags: tags of picture
@@ -28,7 +28,7 @@ class YandereGrabber(object):
         """
 
         info("Yandere grabber get_picture()")
-        url = self.__url % (tags, rating)
+        url = self._url % (tags, rating)
 
         debug("Get url: " + str(url))
 

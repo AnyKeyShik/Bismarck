@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from exceptions import PictureNotFoundException
+from core import PictureNotFoundException
 
 from utils.logger import class_construct, log_func, info, debug
 
@@ -9,21 +9,21 @@ from .yandere_grabber import YandereGrabber as YandeGrabber
 
 
 class PictureGrabber(object):
-    r"""
+    """
     Unified grabber for konachan and yandere
     """
 
-    __kon = None
-    __ya = None
+    _kon = None
+    _ya = None
 
     @class_construct
     def __init__(self):
-        self.__kon = KonaGrabber()
-        self.__ya = YandeGrabber()
+        self._kon = KonaGrabber()
+        self._ya = YandeGrabber()
 
     @log_func()
     def get_picture(self, tags, rating):
-        r"""
+        """
         Get picture
 
         :param tags: picture tags
@@ -34,7 +34,7 @@ class PictureGrabber(object):
         """
 
         info("PictureGrabber get_picture()")
-        url, picture_hash = self.__kon.get_picture(tags, rating)
+        url, picture_hash = self._kon.get_picture(tags, rating)
         debug("Get url '" + str(url) + "' and hash '" + str(picture_hash) + "'")
 
         if picture_hash != "":
@@ -43,7 +43,7 @@ class PictureGrabber(object):
         else:
             info("Not found picture in Konachan. Continue")
 
-            url, picture_hash = self.__ya.get_picture(tags, rating)
+            url, picture_hash = self._ya.get_picture(tags, rating)
             debug("Get url '" + str(url) + "' and hash '" + str(picture_hash) + "'")
 
             if picture_hash != "":
