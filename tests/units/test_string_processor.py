@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 
+import json
 import unittest
+
+import pkg_resources
 from anytree import RenderTree
 
-from utils.text_processor.string_processor import StringProcessor
+from core.text_processor import StringProcessor
 
 
 class TestStringProcessor(unittest.TestCase):
@@ -12,9 +15,22 @@ class TestStringProcessor(unittest.TestCase):
     def setUpClass(cls):
         print("Init tests...\n" + "=" * 50 + "\n")
 
+        resource_path = '/'.join(('../snippets', 'input.json'))
+        template = pkg_resources.resource_stream(__name__, resource_path)
+        line = template.read().decode('utf-8')
+        input_string = json.loads(line)['messages']['string_processor']
+        template.close()
+
         cls.sp = StringProcessor()
-        cls.sp.create_message_tree(",,,,,,ЮОИ некопара. что    скажешь про      SAO?              "
-                                   "И покажи хентай!!!! с лолями!!!!!!!!!!-школьницами")
+        cls.sp.create_message_tree(input_string)
+
+        resource_path = '/'.join(('../snippets', 'model.json'))
+        template = pkg_resources.resource_stream(__name__, resource_path)
+        line = template.read().decode('utf-8')
+        cls.tags = json.loads(line)['string_processor']['tags']
+        cls.rating = json.loads(line)['string_processor']['rating']
+        cls.commands = json.loads(line)['string_processor']['commands']
+        template.close()
 
     @classmethod
     def tearDownClass(cls):
@@ -28,22 +44,22 @@ class TestStringProcessor(unittest.TestCase):
         print("=" * 50 + "\nFinish tests!")
 
     def test_tag(self):
-        print("def get_tag() test")\
+        print("Start tags test in StringProcessor")
 
-        self.assertEqual(['юри', 'некопара', 'лоли', 'школьница'], self.sp.get_tags())
+        self.assertEqual(self.tags, self.sp.get_tags())
 
-        print("def get_tag() test passed successfully!")
+        print("Tags test in StringProcessor passed successfully!")
 
     def test_rating(self):
-        print("def get_rating() test")
+        print("Start rating test in StringProcessor")
 
-        self.assertEqual("хентай", self.sp.get_rating())
+        self.assertEqual(self.rating, self.sp.get_rating())
 
-        print("def get_rating() test passed successfully!")
+        print("Rating test in StringProcessor passed successfully!")
 
     def test_command(self):
-        print("def get_commands() test")
+        print("Start commands test in StringProcessor")
 
-        self.assertEqual(['что скажешь про'], self.sp.get_commands())
+        self.assertEqual(self.commands, self.sp.get_commands())
 
-        print("def get_commands() test passed successfully!")
+        print("Commands test in StringProcessor passed successfully!")

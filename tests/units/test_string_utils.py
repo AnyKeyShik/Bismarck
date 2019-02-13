@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 
+import json
 import unittest
 
-from utils.text_processor.utils import distance, prepare_msg
+import pkg_resources
+
+from core.text_processor.utils import distance, prepare_msg
 
 
 class TestStringUtils(unittest.TestCase):
@@ -11,24 +14,36 @@ class TestStringUtils(unittest.TestCase):
     def setUpClass(cls):
         print("Init tests...\n" + "=" * 50 + "\n")
 
+        resource_path = '/'.join(('../snippets', 'input.json'))
+        template = pkg_resources.resource_stream(__name__, resource_path)
+        line = template.read().decode('utf-8')
+        cls.input_sp = json.loads(line)['messages']['string_processor']
+        cls.input_su = json.loads(line)['messages']['string_utils']
+        template.close()
+
+        resource_path = '/'.join(('../snippets', 'model.json'))
+        template = pkg_resources.resource_stream(__name__, resource_path)
+        line = template.read().decode('utf-8')
+        cls.sp = json.loads(line)['string_utils']['string_processor']
+        cls.su = json.loads(line)['string_utils']['string_utils']
+        template.close()
+
     def test_distance(self):
-        print("def distance() test")
+        print("Start distance test in StringUtils")
 
         self.assertEqual(1, distance("юои", "юри"))
         self.assertEqual(2, distance("простая проверка", "поостая провекка"))
         self.assertNotEqual(0, distance("хентай", "хннтай"))
 
-        print("def distance() test passed successfully!")
+        print("Distance test in StringUtils passed successfully!")
 
     def test_prepare_msg(self):
-        print("def prepare_msg() test")
+        print("Start prepare message test in StringUtils")
 
-        msg = prepare_msg(",,,,,,ЮОИ некопара. что    скажешь про      SAO?              "
-                          "И покажи хентай!!!! с лолями!!!!!!!!!!-школьницами")
-        self.assertEqual(['юои', 'некопара', 'что', 'скажешь', 'про', 'sao', 'и', 'покажи', 'хентай', 'с',
-                          'лолями', 'школьницами'], msg)
+        msg = prepare_msg(self.input_sp)
+        self.assertEqual(self.sp, msg)
 
-        msg = prepare_msg("[id336383265|*bismarkb1996], i hate this fcking shit!!!!!!!")
-        self.assertEqual(['i', 'hate', 'this', 'fcking', 'shit'], msg)
+        msg = prepare_msg(self.input_su)
+        self.assertEqual(self.su, msg)
 
-        print("def prepare_msg() test passed successfully!")
+        print("Prepare message test in StringUtils passed successfully!")
