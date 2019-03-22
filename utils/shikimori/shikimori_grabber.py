@@ -8,7 +8,7 @@ from core import AnimeNotFoundException
 from .api_builder import ApiBuilder
 
 headers = {
-    "User-Agent": "Bismark Bot",
+    "User-Agent": "Bismarck Bot",
     # "Authorization": "there is your secret key",
 }
 

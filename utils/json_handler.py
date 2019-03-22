@@ -8,7 +8,7 @@ from core import TagNotFoundException, RatingNotFoundException, CommandNotFoundE
 from utils.logger import class_construct, log_func, debug, DEBUG_LOG
 
 
-class StuffHandler(object):
+class JsonHandler(object):
     """
     Handler for simple get stuff like a pictures tags, ratings and ignored words
     """
@@ -20,6 +20,10 @@ class StuffHandler(object):
     _commands = None
     _ratings = None
     _ignored = None
+    _ignored_words = None
+
+    _consts = None
+    _messages = None
 
     @class_construct
     def __init__(self):
@@ -55,6 +59,23 @@ class StuffHandler(object):
         line = template.read().decode('utf-8')
         debug("Read data: " + line + ". Proceed in json")
         self._ignored = json.loads(line)['ignored']
+        self._ignored_words = json.loads(line)['words']
+        template.close()
+
+        self._resource_path = '/'.join(('../static', 'consts.json'))
+        debug("Get reader for " + self._resource_package + "/" + self._resource_path)
+        template = pkg_resources.resource_stream(self._resource_package, self._resource_path)
+        line = template.read().decode('utf-8')
+        debug("Read data: " + line + ". Proceed in json")
+        self._consts = json.loads(line)
+        template.close()
+
+        self._resource_path = '/'.join(('../static', 'messages.json'))
+        debug("Get reader for " + self._resource_package + "/" + self._resource_path)
+        template = pkg_resources.resource_stream(self._resource_package, self._resource_path)
+        line = template.read().decode('utf-8')
+        debug("Read data: " + line + ". Proceed in json")
+        self._messages = json.loads(line)
         template.close()
 
     @property
@@ -104,7 +125,7 @@ class StuffHandler(object):
         try:
             return self._commands[command]
         except KeyError:
-            raise CommandNotFoundException
+            raise CommandNotFoundException()
             pass
 
     @property
@@ -150,7 +171,7 @@ class StuffHandler(object):
         try:
             return self._tags[tag]
         except KeyError:
-            raise TagNotFoundException
+            raise TagNotFoundException()
             pass
 
     @property
@@ -179,8 +200,20 @@ class StuffHandler(object):
         try:
             return self._ratings[rating]
         except KeyError:
-            raise RatingNotFoundException
+            raise RatingNotFoundException()
             pass
+
+    @property
+    @log_func(log_write=DEBUG_LOG)
+    def ignored(self):
+        """
+        Get all ignored words
+
+        :return: all ignored words
+        :rtype: list
+        """
+
+        return self._ignored
 
     @property
     @log_func(log_write=DEBUG_LOG)
@@ -192,4 +225,28 @@ class StuffHandler(object):
         :rtype: list
         """
 
-        return self._ignored
+        return self._ignored_words
+
+    @property
+    @log_func(log_write=DEBUG_LOG)
+    def constants(self):
+        """
+        Get app constants
+
+        :return: app constants
+        :rtype: dict
+        """
+
+        return self._consts
+
+    @property
+    @log_func(log_write=DEBUG_LOG)
+    def messages(self):
+        """
+        Get messages for send as answer
+
+        :return: messages templates
+        :rtype: dict
+        """
+
+        return self._messages

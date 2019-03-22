@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
+import requests
+
 from core import PictureNotFoundException
-
+from utils.json_handler import JsonHandler
 from utils.logger import class_construct, log_func, info, debug
-
 from .konachan_grabber import KonachanGrabber as KonaGrabber
 from .yandere_grabber import YandereGrabber as YandeGrabber
 
@@ -15,11 +16,14 @@ class PictureGrabber(object):
 
     _kon = None
     _ya = None
+    _handler = None
 
     @class_construct
     def __init__(self):
         self._kon = KonaGrabber()
         self._ya = YandeGrabber()
+
+        self._handler = JsonHandler()
 
     @log_func()
     def get_picture(self, tags, rating):
@@ -28,8 +32,6 @@ class PictureGrabber(object):
 
         :param tags: picture tags
         :param rating: picture rating
-        :return: picture url and hash
-        :rtype: (str, str)
         :raise: PictureNotFoundException if picture not found
         """
 
@@ -48,7 +50,17 @@ class PictureGrabber(object):
 
             if picture_hash != "":
                 info("Found picture in Yandere. Returning")
-                return url, picture_hash
+
+                try:
+                    raw_picture = requests.get(url)
+                    picture = open(self._handler.constants['default_picture_file'], 'wb')
+                    for chunk in raw_picture.iter_content(chunk_size=512 * 1024):
+                        if chunk:
+                            picture.write(chunk)
+                    picture.close()
+
+                except:
+                    raise PictureNotFoundException()
             else:
                 info("Not found picture in Yandere. Raise PictureNotFoundException")
-                raise PictureNotFoundException
+                raise PictureNotFoundException()

@@ -25,7 +25,7 @@ def create_connection(address):
 @log_func(log_write=DEBUG_LOG)
 def config(ip, port):
     """
-    Config tor-proxy
+    Config proxy
 
     :param ip: proxy ip
     :param port: proxy port

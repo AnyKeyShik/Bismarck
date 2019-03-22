@@ -3,7 +3,7 @@
 import unittest
 
 from core import TagNotFoundException, CommandNotFoundException, RatingNotFoundException
-from utils.json_handler import StuffHandler
+from utils.json_handler import JsonHandler
 
 
 class TestStuffHandler(unittest.TestCase):
@@ -12,7 +12,7 @@ class TestStuffHandler(unittest.TestCase):
     def setUpClass(cls):
         print("Init tests...\n" + "=" * 50 + "\n")
 
-        cls.handler = StuffHandler()
+        cls.handler = JsonHandler()
 
     def test_commands(self):
         print("Start commands test in StuffHandler")
@@ -27,8 +27,7 @@ class TestStuffHandler(unittest.TestCase):
 
         self.assertEqual("скажешь", self.handler.commands_parts[1])
         self.assertEqual("расскажи", self.handler.commands_parts[3])
-        with self.assertRaises(IndexError):
-            self.handler.commands_parts[7]  # Test for part "об"
+        self.assertEqual(9, len(self.handler.commands_parts))
 
         print("Commands parts test in StuffHandler passed successfully!")
 

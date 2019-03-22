@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 
-from .string_processor import StringProcessor
+from .tree_processor import TreeProcessor

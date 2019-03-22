@@ -76,6 +76,17 @@ def info(message):
     logging.info("~" * 5 + ">" + message)
 
 
+def warning(message):
+    """
+    Write in warning-log
+
+    :param message: message for write
+    :return: None
+    """
+
+    logging.warning("!" + "-" * 5 + "!" + ">" + message)
+
+
 def error(message):
     """
     Write in error-log
