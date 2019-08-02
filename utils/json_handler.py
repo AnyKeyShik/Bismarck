@@ -17,7 +17,9 @@ class JsonHandler(object):
     _resource_path = None
 
     _tags = None
+    _tags_user = None
     _commands = None
+    _commands_user = None
     _ratings = None
     _ignored = None
     _ignored_words = None
@@ -35,6 +37,7 @@ class JsonHandler(object):
         line = template.read().decode('utf-8')
         debug("Read data: " + line + ". Proceed in json")
         self._tags = json.loads(line)['tags']
+        self._tags_user = json.loads(line)['user_tags']
         template.close()
 
         self._resource_path = '/'.join(('../static', 'commands.json'))
@@ -43,6 +46,7 @@ class JsonHandler(object):
         line = template.read().decode('utf-8')
         debug("Read data: " + line + ". Proceed in json")
         self._commands = json.loads(line)['commands']
+        self._commands_user = json.loads(line)['commands_user']
         template.close()
 
         self._resource_path = '/'.join(('../static', 'ratings.json'))
@@ -89,6 +93,18 @@ class JsonHandler(object):
         """
 
         return list(self._commands.keys())
+
+    @property
+    @log_func(log_write=DEBUG_LOG)
+    def commands_user(self):
+        """
+        Get all commands with description
+
+        :return: all commands with description
+        :rtype: str
+        """
+
+        return "\n".join([x + ' - ' + self._commands_user[x] for x in self._commands_user])
 
     @property
     @log_func(log_write=DEBUG_LOG)
@@ -139,6 +155,18 @@ class JsonHandler(object):
         """
 
         return list(self._tags.keys())
+
+    @property
+    @log_func(log_write=DEBUG_LOG)
+    def tags_user(self):
+        """
+        Get all tags for user
+
+        :return: all tags for user
+        :rtype: str
+        """
+
+        return "\n".join(self._tags_user)
 
     @property
     @log_func(log_write=DEBUG_LOG)

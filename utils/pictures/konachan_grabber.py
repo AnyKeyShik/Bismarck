@@ -14,7 +14,7 @@ class KonachanGrabber(object):
 
     @class_construct
     def __init__(self):
-        self._url = "http://konachan.com/post.json?tags=%s+rating:%s+order:random&limit=1"
+        self._url = "http://konachan.com/post.json?tags=%s&rating:%s&order:random&limit=1"
 
     @log_func(log_write=DEBUG_LOG)
     def get_picture(self, tags, rating):
@@ -27,7 +27,7 @@ class KonachanGrabber(object):
         :rtype: (str, str)
         """
 
-        url = self._url % (tags, rating)
+        url = self._url % ('+'.join(tags), rating)
 
         debug("Get url: " + str(url))
 

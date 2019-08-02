@@ -16,15 +16,10 @@ class CommandProcessor(object):
     _handler = None
 
     @class_construct
-    def __init__(self, command, arguments):
+    def __init__(self):
         """
         Constructor for CommandProcessor
-
-        :param command: command from user
-        :param arguments: command argument
         """
-        self._command = command
-        self._argument = arguments
 
         self._handler = JsonHandler()
 
@@ -32,16 +27,25 @@ class CommandProcessor(object):
             "about": self._about,
             "hello": self._hello,
             "": self._picture,
-            "roll": self._roll
+            "roll": self._roll,
+            "tags": self._tags,
+            "commands": self._commands,
+            "error": self._error
         }
 
-    def execute(self):
+    def execute(self, command, arguments):
         """
         Call function for command
 
+        :param command: command from user
+        :param arguments: command argument
         :return: None
         :rtype: None
         """
+
+        self._command = command
+        self._argument = arguments
+
         return self._actions[self._command]()
 
     def _about(self):
@@ -72,6 +76,7 @@ class CommandProcessor(object):
         Picture by tag and rating
 
         :return: picture url
+        :rtype: str
         """
         grabber = PictureGrabber()
 
@@ -84,11 +89,47 @@ class CommandProcessor(object):
 
     def _roll(self):
         """
-        Choice of two options
+        Choice of provided options
 
-        :return: one of two
+        :return: one of many
+        :rtype: str
         """
 
-        num = random.randint(1, 100)
+        choices = list(map(lambda x: x.replace("или", ""), self._argument))
 
-        return self._argument[0] if num < 50 else self._argument[1]
+        if len(choices) > 1:
+
+            num = random.randint(1, 100 * len(choices))
+
+            return choices[num // 100]
+        else:
+            return self._handler.messages['no_choices']
+
+    def _tags(self):
+        """
+        List of avialivle tags
+
+        :return: list of tags
+        :rtype: str
+        """
+
+        return self._handler.tags_user
+
+    def _commands(self):
+        """
+        List of avialivle commands
+
+        :return: list of commands
+        :rtype: str
+        """
+
+        return self._handler.commands_user
+
+    def _error(self):
+        """
+        Message with bugs description
+
+        :return: bug message
+        :rtype: str
+        """
+        return self._handler.messages['errors_answer']

@@ -14,7 +14,7 @@ class YandereGrabber(object):
 
     @class_construct
     def __init__(self):
-        self._url = "https://yande.re/post.json?tags=%s+rating:%s+order:random&limit=1"
+        self._url = "https://yande.re/post.json?tags=%s&rating:%s&order:random&limit=1"
 
     @log_func(log_write=DEBUG_LOG)
     def get_picture(self, tags, rating):
@@ -28,7 +28,7 @@ class YandereGrabber(object):
         """
 
         info("Yandere grabber get_picture()")
-        url = self._url % (tags, rating)
+        url = self._url % ('+'.join(tags), rating)
 
         debug("Get url: " + str(url))
 

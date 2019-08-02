@@ -34,7 +34,7 @@ class TreeProcessor(object):
     @class_construct
     def __init__(self):
         self._handler = JsonHandler()
-        self._tree = Node("Message")
+        self._tree = None
 
         self._com_part_distance = 3
         self._com_simple_distance = 3
@@ -48,6 +48,9 @@ class TreeProcessor(object):
         self._rating_distance = 4
 
         self._ignore_distance = 2
+
+        self._command = ""
+        self._argument = []
 
     @log_func(log_write=DEBUG_LOG)
     def _is_command_part(self, string):
@@ -331,6 +334,8 @@ class TreeProcessor(object):
         :rtype: None
         """
 
+        self._tree = Node("Message")
+
         info("Get message " + raw_message)
         self._message = prepare_msg(raw_message)
         debug("Processed message: " + str(self._message))
@@ -375,7 +380,6 @@ class TreeProcessor(object):
         tags = []
         rating = ""
         command = ""
-        argument = ""
 
         for i in self._tree.children:
             debug("Process node " + str(i.name))
@@ -439,13 +443,11 @@ class TreeProcessor(object):
                     tags.append(name)  # Add tag to return
 
             if arg_part != "":
-                argument += arg_part
-                argument += " "
+                self._argument.append(arg_part)
 
         self._tags = tags
         self._command = command
         self._rating = rating
-        self._argument = argument
 
     @log_func()
     def get_tags(self):
@@ -457,9 +459,11 @@ class TreeProcessor(object):
         """
 
         try:
-            return [self._handler.tag_present(x) for x in self._tags]
+            tags = self._tags
+            self._tags = None
+            return [self._handler.tag_present(x) for x in tags]
         except TagNotFoundException:
-            return None
+            return [""]
 
     @log_func()
     def get_rating(self):
@@ -471,9 +475,11 @@ class TreeProcessor(object):
         """
 
         try:
-            return self._handler.rating_present(self._rating)
+            rating = self._rating
+            self._rating = None
+            return self._handler.rating_present(rating)
         except RatingNotFoundException:
-            return None
+            return ""
 
     @log_func()
     def get_commands(self):
@@ -485,9 +491,13 @@ class TreeProcessor(object):
         """
 
         try:
-            return self._handler.command_present(self._command), self._argument
+            command = self._command
+            argument = self._argument
+            self._command = None
+            self._argument = []
+            return self._handler.command_present(command), argument
         except CommandNotFoundException:
-            return None
+            return "", ""
 
     @log_func()
     def get_message(self):
