@@ -13,4 +13,4 @@ class KonachanGrabber(Grabber):
 
     @class_construct
     def __init__(self):
-        self._url = "http://konachan.com/post.json?tags=%s&rating:%s&order:random&limit=1"
+        self._url = "http://konachan.com/post.json?tags=%s+rating:%s+order:random&limit=1"

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from json.decoder import JSONDecodeError
+
 import requests
 
 from utils.logger import log_func, debug, info, DEBUG_LOG
@@ -28,6 +30,9 @@ class Grabber(object):
             picture_object = requests.get(url).json()
         except ConnectionError:
             info("Return empty strings: connection error")
+            return "", ""
+        except JSONDecodeError:
+            info("Picture not found")
             return "", ""
 
         debug("Get picture: " + str(picture_object))

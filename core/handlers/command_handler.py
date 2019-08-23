@@ -81,7 +81,7 @@ class CommandProcessor(object):
         grabber = PictureGrabber()
 
         try:
-            grabber.get_picture(self._argument[1], self._argument[0])
+            grabber.get_picture(self._argument[0], self._argument[1])
 
             return self._handler.messages['picture_answer']
         except PictureNotFoundException:
