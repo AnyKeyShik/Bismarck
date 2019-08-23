@@ -95,7 +95,8 @@ class CommandProcessor(object):
         :rtype: str
         """
 
-        choices = list(map(lambda x: x.replace("или", ""), self._argument))
+        sentence = " ".join(self._argument)
+        choices = sentence.split(" или ")
 
         if len(choices) > 1:
 

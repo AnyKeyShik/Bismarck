@@ -5,7 +5,13 @@ from time import sleep
 
 import requests
 
-from core import TooManyRequestsException, UnexpectedCodeException
+
+class TooManyRequestsException(Exception):
+    pass
+
+
+class UnexpectedCodeException(Exception):
+    pass
 
 
 def retry_on_error(retries_count=3, delay=0.1):
@@ -17,9 +23,7 @@ def retry_on_error(retries_count=3, delay=0.1):
                 except TooManyRequestsException:
                     sleep(delay)
             return func(*args, **kwargs)
-
         return new_func
-
     return decorator
 
 
@@ -29,40 +33,39 @@ def raise_exception_by_code(code):
     if code != 200:
         raise UnexpectedCodeException()
 
-
 class ApiPath(object):
     def __init__(self, base, headers):
-        self._path = base
-        self._headers = headers
+        self.__path = base
+        self.__headers = headers
 
-    def _getattr_(self, name):
-        self._path = urllib.parse.urljoin(self._path + "/", name)
+    def __getattr__(self, name):
+        self.__path = urllib.parse.urljoin(self.__path + "/", name)
         return self
 
-    def _getitem_(self, item):
-        return self._getattr_(str(item))
+    def __getitem__(self, item):
+        return self.__getattr__(str(item))
 
     @retry_on_error()
     def get(self, **kwargs):
-        r = requests.get(self._path, params=kwargs, headers=self._headers)
+        r = requests.get(self.__path, params=kwargs, headers=self.__headers)
         raise_exception_by_code(r.status_code)
         return r.text
 
     @retry_on_error()
     def post(self, **kwargs):
-        r = requests.post(self._path, data=kwargs)
+        r = requests.post(self.__path, data=kwargs)
         raise_exception_by_code(r.status_code)
         return r.text
 
 
 class ApiBuilder(object):
     def __init__(self, server, headers=None):
-        self._server = server
-        self._headers = headers
+        self.__server = server
+        self.__headers = headers
 
-    def _getattr_(self, name):
-        ap = ApiPath(self._server, self._headers)
-        return ap._getattr_(name)
+    def __getattr__(self, name):
+        ap = ApiPath(self.__server, self.__headers)
+        return ap.__getattr__(name)
 
-    def _getitem_(self, item):
-        self._getattr_(str(item))
+    def __getitem__(self, item):
+        self.__getattr__(str(item))

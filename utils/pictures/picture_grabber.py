@@ -36,42 +36,48 @@ class PictureGrabber(object):
         """
 
         info("PictureGrabber get_picture()")
-        url, picture_hash = self._kon.get_picture(rating, tags)
+
+        debug("Join tags list by '+'")
+        if type(tags) == list:
+            tags = '+'.join(tags)
+
+        url, picture_hash = self._kon.get_picture(tags, rating)
         debug("Get url '" + str(url) + "' and hash '" + str(picture_hash) + "'")
 
         if picture_hash != "":
             info("Found picture in Konachan. Returning")
 
-            try:
-                raw_picture = requests.get(url)
-                picture = open(self._handler.constants['default_picture_file'], 'wb')
-                for chunk in raw_picture.iter_content(chunk_size=512 * 1024):
-                    if chunk:
-                        picture.write(chunk)
-                picture.close()
-
-            except:
-                raise PictureNotFoundException()
+            self._download_picture(url)
 
         else:
             info("Not found picture in Konachan. Continue")
 
-            url, picture_hash = self._ya.get_picture(rating, tags)
+            url, picture_hash = self._ya.get_picture(tags, rating)
             debug("Get url '" + str(url) + "' and hash '" + str(picture_hash) + "'")
 
             if picture_hash != "":
                 info("Found picture in Yandere. Returning")
 
-                try:
-                    raw_picture = requests.get(url)
-                    picture = open(self._handler.constants['default_picture_file'], 'wb')
-                    for chunk in raw_picture.iter_content(chunk_size=512 * 1024):
-                        if chunk:
-                            picture.write(chunk)
-                    picture.close()
-
-                except:
-                    raise PictureNotFoundException()
+                self._download_picture(url)
             else:
                 info("Not found picture in Yandere. Raise PictureNotFoundException")
                 raise PictureNotFoundException()
+
+    @log_func()
+    def _download_picture(self, url):
+        """
+        Download picture as file from url
+
+        :param url: url for downloading
+        :raise: PictureNotFoundException if error occurring while downloading
+        """
+        try:
+            raw_picture = requests.get(url)
+            picture = open(self._handler.constants['default_picture_file'], 'wb')
+            for chunk in raw_picture.iter_content(chunk_size=512 * 1024):
+                if chunk:
+                    picture.write(chunk)
+            picture.close()
+
+        except:
+            raise PictureNotFoundException()
