@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from anytree import RenderTree
+
 from core import CommandProcessor
 from core import TreeProcessor
 from utils.logger import *
@@ -28,6 +30,10 @@ class Kernel(object):
 
             self._tree_parser.create_message_tree(self._msg)
             self._tree_parser.parse_message_tree()
+
+            tree = self._tree_parser.get_tree()
+            for pre, fill, node in RenderTree(tree):
+                info("%s%s" % (pre, node.name))
 
             (self._msg_command, self._msg_arguments) = self._tree_parser.get_commands()
 

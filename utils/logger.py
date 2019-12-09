@@ -27,7 +27,7 @@ def log_func(log_write=False):
     def decorator(func):
         def wrapper(*args, **kwargs):
 
-            if log_write:
+            if log_write and DEBUG_LOG:
                 logging.debug("-" * 3 + ">" + func.__name__ + "()")
             else:
                 logging.info("-" * 3 + ">" + func.__name__ + "()")
@@ -62,7 +62,8 @@ def debug(message):
     :return: None
     """
 
-    logging.debug("~" * 5 + ">" + message)
+    if DEBUG_LOG:
+        logging.debug("~" * 5 + ">" + message)
 
 
 def info(message):

@@ -5,7 +5,7 @@ import unittest
 
 import pkg_resources
 
-from core.text_processor.string_processor import distance, prepare_msg
+from core.text_processor.string_processor import is_words_similar, prepare_msg
 
 
 class TestStringUtils(unittest.TestCase):
@@ -31,9 +31,8 @@ class TestStringUtils(unittest.TestCase):
     def test_distance(self):
         print("Start distance test in StringProcessor")
 
-        self.assertEqual(1, distance("юои", "юри"))
-        self.assertEqual(2, distance("простая проверка", "поостая провекка"))
-        self.assertNotEqual(0, distance("хентай", "хннтай"))
+        self.assertEqual(False, is_words_similar("юои", "юри"))
+        self.assertEqual(True, is_words_similar("простая проверка", "поостая провекка"))
 
         print("Distance test in StringProcessor passed successfully!")
 

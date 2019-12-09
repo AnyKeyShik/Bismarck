@@ -5,7 +5,7 @@ import json
 import pkg_resources
 
 from core import TagNotFoundException, RatingNotFoundException, CommandNotFoundException
-from utils.logger import class_construct, log_func, debug, DEBUG_LOG
+from utils.logger import class_construct, debug
 
 
 class JsonHandler(object):
@@ -22,7 +22,6 @@ class JsonHandler(object):
     _commands_user = None
     _ratings = None
     _ignored = None
-    _ignored_words = None
 
     _consts = None
     _messages = None
@@ -62,8 +61,7 @@ class JsonHandler(object):
         template = pkg_resources.resource_stream(self._resource_package, self._resource_path)
         line = template.read().decode('utf-8')
         debug("Read data: " + line + ". Proceed in json")
-        self._ignored = json.loads(line)['ignored']
-        self._ignored_words = json.loads(line)['words']
+        self._ignored = json.loads(line)['words']
         template.close()
 
         self._resource_path = '/'.join(('../static', 'consts.json'))
@@ -83,7 +81,6 @@ class JsonHandler(object):
         template.close()
 
     @property
-    @log_func(log_write=DEBUG_LOG)
     def commands(self):
         """
         Get all commands
@@ -95,7 +92,6 @@ class JsonHandler(object):
         return list(self._commands.keys())
 
     @property
-    @log_func(log_write=DEBUG_LOG)
     def commands_user(self):
         """
         Get all commands with description
@@ -107,7 +103,6 @@ class JsonHandler(object):
         return "\n".join([x + ' - ' + self._commands_user[x] for x in self._commands_user])
 
     @property
-    @log_func(log_write=DEBUG_LOG)
     def commands_parts(self):
         """
         Get all possible commands parts
@@ -118,16 +113,13 @@ class JsonHandler(object):
 
         parts = []
         for command_parts in self._commands.keys():
-            debug("Processing command: " + command_parts)
             if len(command_parts.split(' ')) > 1:
                 for part in command_parts.split(' '):
-                    debug("Command parts:" + part)
                     if len(part) > 2:
                         parts.append(part)
 
         return parts
 
-    @log_func(log_write=DEBUG_LOG)
     def command_present(self, command):
         """
         Get internal command
@@ -145,7 +137,6 @@ class JsonHandler(object):
             pass
 
     @property
-    @log_func(log_write=DEBUG_LOG)
     def tags(self):
         """
         Get all tags
@@ -157,7 +148,6 @@ class JsonHandler(object):
         return list(self._tags.keys())
 
     @property
-    @log_func(log_write=DEBUG_LOG)
     def tags_user(self):
         """
         Get all tags for user
@@ -169,7 +159,6 @@ class JsonHandler(object):
         return "\n".join(self._tags_user)
 
     @property
-    @log_func(log_write=DEBUG_LOG)
     def tags_parts(self):
         """
         Get all possible tags parts
@@ -185,7 +174,6 @@ class JsonHandler(object):
 
         return parts
 
-    @log_func(log_write=DEBUG_LOG)
     def tag_present(self, tag):
         """
         Get tag present on Konachan and Yandere
@@ -203,7 +191,6 @@ class JsonHandler(object):
             pass
 
     @property
-    @log_func(log_write=DEBUG_LOG)
     def ratings(self):
         """
         Get all ratings
@@ -214,7 +201,6 @@ class JsonHandler(object):
 
         return list(self._ratings.keys())
 
-    @log_func(log_write=DEBUG_LOG)
     def rating_present(self, rating):
         """
         Get rating present on Konachan and Yandere
@@ -232,7 +218,6 @@ class JsonHandler(object):
             pass
 
     @property
-    @log_func(log_write=DEBUG_LOG)
     def ignored(self):
         """
         Get all ignored words
@@ -244,19 +229,6 @@ class JsonHandler(object):
         return self._ignored
 
     @property
-    @log_func(log_write=DEBUG_LOG)
-    def ignored_words(self):
-        """
-        Get all ignored words
-
-        :return: all ignored words
-        :rtype: list
-        """
-
-        return self._ignored_words
-
-    @property
-    @log_func(log_write=DEBUG_LOG)
     def constants(self):
         """
         Get app constants
@@ -268,7 +240,6 @@ class JsonHandler(object):
         return self._consts
 
     @property
-    @log_func(log_write=DEBUG_LOG)
     def messages(self):
         """
         Get messages for send as answer

@@ -56,11 +56,15 @@ class CommandProcessor(object):
         :rtype: str
         """
         grabber = ShikimoriGrabber()
+        anime_name = ' '.join(self._argument)
 
         try:
-            return grabber.get_anime(self._argument[0])
+            if len(anime_name) > 0:
+                return grabber.get_anime(anime_name)
+            else:
+                return self._handler.messages['no_anime_given_answer']
         except AnimeNotFoundException:
-            return self._handler.messages['no_anime_answer'] + self._argument[0]
+            return self._handler.messages['no_anime_answer'] + anime_name
 
     def _hello(self):
         """
@@ -104,7 +108,7 @@ class CommandProcessor(object):
 
             return choices[num // 100]
         else:
-            return self._handler.messages['no_choices']
+            return self._handler.messages['no_choices_answer']
 
     def _tags(self):
         """
