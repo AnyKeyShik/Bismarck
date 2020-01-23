@@ -3,8 +3,8 @@
 import unittest
 
 from core import PictureNotFoundException
-from utils.pictures import PictureGrabber
-from utils.proxy import patch
+from core.utils.pictures import PictureGrabber
+from core.utils.proxy import patch
 
 
 class TestPictureGrabber(unittest.TestCase):
@@ -18,7 +18,7 @@ class TestPictureGrabber(unittest.TestCase):
         print("Start successful test for get picture")
 
         pg = PictureGrabber()
-        url = pg.get_picture("seifuku", "explicit")
+        url = pg.get_picture("seifuku", "explicit", False)
         self.assertNotEqual('', url)
 
         print("Successful test for get picture successfully!")
@@ -28,6 +28,6 @@ class TestPictureGrabber(unittest.TestCase):
 
         pg = PictureGrabber()
         with self.assertRaises(PictureNotFoundException):
-            pg.get_picture("qwerty", "qwerty")
+            pg.get_picture("qwerty", "qwerty", True)
 
         print("Fail test for get picture successfully!")

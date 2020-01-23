@@ -5,7 +5,6 @@ import json
 import pkg_resources
 
 from core import TagNotFoundException, RatingNotFoundException, CommandNotFoundException
-from utils.logger import class_construct, debug
 
 
 class JsonHandler(object):
@@ -24,59 +23,53 @@ class JsonHandler(object):
     _ignored = None
 
     _consts = None
+    _auth_consts = None
     _messages = None
 
-    @class_construct
     def __init__(self):
         self._resource_package = __name__
 
-        self._resource_path = '/'.join(('../static', 'tags.json'))
-        debug("Get reader for " + self._resource_package + "/" + self._resource_path)
+        self._resource_path = '/'.join(('../../static', 'tags.json'))
         template = pkg_resources.resource_stream(self._resource_package, self._resource_path)
         line = template.read().decode('utf-8')
-        debug("Read data: " + line + ". Proceed in json")
         self._tags = json.loads(line)['tags']
         self._tags_user = json.loads(line)['user_tags']
         template.close()
 
-        self._resource_path = '/'.join(('../static', 'commands.json'))
-        debug("Get reader for " + self._resource_package + "/" + self._resource_path)
+        self._resource_path = '/'.join(('../../static', 'commands.json'))
         template = pkg_resources.resource_stream(self._resource_package, self._resource_path)
         line = template.read().decode('utf-8')
-        debug("Read data: " + line + ". Proceed in json")
         self._commands = json.loads(line)['commands']
         self._commands_user = json.loads(line)['commands_user']
         template.close()
 
-        self._resource_path = '/'.join(('../static', 'ratings.json'))
-        debug("Get reader for " + self._resource_package + "/" + self._resource_path)
+        self._resource_path = '/'.join(('../../static', 'ratings.json'))
         template = pkg_resources.resource_stream(self._resource_package, self._resource_path)
         line = template.read().decode('utf-8')
-        debug("Read data: " + line + ". Proceed in json")
         self._ratings = json.loads(line)['ratings']
         template.close()
 
-        self._resource_path = '/'.join(('../static', 'ignored.json'))
-        debug("Get reader for " + self._resource_package + "/" + self._resource_path)
+        self._resource_path = '/'.join(('../../static', 'ignored.json'))
         template = pkg_resources.resource_stream(self._resource_package, self._resource_path)
         line = template.read().decode('utf-8')
-        debug("Read data: " + line + ". Proceed in json")
         self._ignored = json.loads(line)['words']
         template.close()
 
-        self._resource_path = '/'.join(('../static', 'consts.json'))
-        debug("Get reader for " + self._resource_package + "/" + self._resource_path)
+        self._resource_path = '/'.join(('../../static', 'consts.json'))
         template = pkg_resources.resource_stream(self._resource_package, self._resource_path)
         line = template.read().decode('utf-8')
-        debug("Read data: " + line + ". Proceed in json")
         self._consts = json.loads(line)
         template.close()
 
-        self._resource_path = '/'.join(('../static', 'messages.json'))
-        debug("Get reader for " + self._resource_package + "/" + self._resource_path)
+        self._resource_path = '/'.join(('../../static', 'auth_consts.json'))
         template = pkg_resources.resource_stream(self._resource_package, self._resource_path)
         line = template.read().decode('utf-8')
-        debug("Read data: " + line + ". Proceed in json")
+        self._auth_consts = json.loads(line)
+        template.close()
+
+        self._resource_path = '/'.join(('../../static', 'messages.json'))
+        template = pkg_resources.resource_stream(self._resource_package, self._resource_path)
+        line = template.read().decode('utf-8')
         self._messages = json.loads(line)
         template.close()
 
@@ -238,6 +231,17 @@ class JsonHandler(object):
         """
 
         return self._consts
+
+    @property
+    def auth_constants(self):
+        """
+        Get app constants for auth
+
+        :return: app constants for auth
+        :rtype: dict
+        """
+
+        return self._auth_consts
 
     @property
     def messages(self):

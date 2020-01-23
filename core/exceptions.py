@@ -21,13 +21,37 @@ class RatingNotFoundException(NotFoundException):
     pass
 
 
+class TagsNotFoundException(NotFoundException):
+    pass
+
+
 class TagNotFoundException(NotFoundException):
     pass
 
 
-class TooManyRequestsException(Exception):
+class DeniedException(Exception):
     pass
 
 
-class UnexpectedCodeException(Exception):
+class HentaiDeniedException(DeniedException):
+    pass
+
+
+class EcchiDeniedException(DeniedException):
+    pass
+
+
+class ErrorException(Exception):
+    pass
+
+
+class DownloadErrorException(ErrorException):
+    pass
+
+
+class TooManyRequestsException(ErrorException):
+    pass
+
+
+class UnexpectedCodeException(ErrorException):
     pass

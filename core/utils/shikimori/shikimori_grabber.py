@@ -12,7 +12,7 @@ headers = {
     # "Authorization": "there is your secret key",
 }
 
-API = ApiBuilder("https://shikimori.org/", headers=headers)
+API = ApiBuilder("https://shikimori.one/", headers=headers)
 
 forum_tag = re.compile("""\[[^\]^\[]*\]""", re.X)
 

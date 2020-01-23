@@ -3,7 +3,7 @@
 import unittest
 
 from core import TagNotFoundException, CommandNotFoundException, RatingNotFoundException
-from utils.json_handler import JsonHandler
+from core.utils.json_handler import JsonHandler
 
 
 class TestStuffHandler(unittest.TestCase):
@@ -51,7 +51,7 @@ class TestStuffHandler(unittest.TestCase):
     def test_tags_parts(self):
         print("Start tags parts test in StuffHandler")
 
-        self.assertEqual("алые", self.handler.tags_parts[0])
+        self.assertEqual("длинные", self.handler.tags_parts[0])
         self.assertNotEqual("девочка", self.handler.tags_parts[3])
 
         print("Tags parts test in StuffHandler passed successfully!")

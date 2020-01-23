@@ -2,10 +2,11 @@
 
 import random
 
-from core.exceptions import AnimeNotFoundException, PictureNotFoundException
-from utils import ShikimoriGrabber, PictureGrabber
-from utils.json_handler import JsonHandler
-from utils.logger import class_construct
+from core.exceptions import AnimeNotFoundException, PictureNotFoundException, TagsNotFoundException, \
+    EcchiDeniedException, HentaiDeniedException, DownloadErrorException
+from core.utils import ShikimoriGrabber, PictureGrabber
+from core.utils.json_handler import JsonHandler
+from core.utils.logger import class_construct
 
 
 class CommandProcessor(object):
@@ -39,8 +40,8 @@ class CommandProcessor(object):
 
         :param command: command from user
         :param arguments: command argument
-        :return: None
-        :rtype: None
+        :return: string with answer for user (in some case returning list)
+        :rtype: str
         """
 
         self._command = command
@@ -79,17 +80,25 @@ class CommandProcessor(object):
         """
         Picture by tag and rating
 
-        :return: picture url
+        :return: pair of picture url and filename
         :rtype: str
         """
         grabber = PictureGrabber()
 
         try:
-            grabber.get_picture(self._argument[0], self._argument[1])
+            grabber.get_picture(self._argument[0], self._argument[1], self._argument[2])
 
-            return self._handler.messages['picture_answer']
+            return self._handler.messages['picture_answer'], self._handler.constants['default_picture_file']
         except PictureNotFoundException:
-            return self._handler.messages['no_picture_answer']
+            return self._handler.messages['no_picture_answer'], self._handler.constants['picture_not_found_file']
+        except TagsNotFoundException:
+            return self._handler.messages['no_tags_answer'], self._handler.constants['no_tags_found_file']
+        except EcchiDeniedException:
+            return self._handler.messages['ecchi_denied_answer'], self._handler.constants['ecchi_denied_file']
+        except HentaiDeniedException:
+            return self._handler.messages['hentai_denied_answer'], self._handler.constants['hentai_denied_file']
+        except DownloadErrorException:
+            return self._handler.messages['download_error_answer'], self._handler.constants['download_error_file']
 
     def _roll(self):
         """

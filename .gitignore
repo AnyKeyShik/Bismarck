@@ -2,4 +2,7 @@ logs/
 .idea/
 venv/
 *__pycache__/
-answer.jpeg
+pictures/
+static/auth_consts.json
+
+test_run.py

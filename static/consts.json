@@ -1,4 +1,8 @@
 {
-  "api_token": "28d7c1340c5e6bcfe4eea76bdc3685c47b41be947a6ae01d791e4137f17dc7a00a10e9f2ac08abe5530d4",
-  "default_picture_file": "answer.jpeg"
+  "default_picture_file": "answer.jpeg",
+  "picture_not_found_file": "404.jpeg",
+  "no_tags_found_file": "tags_404.jpeg",
+  "ecchi_denied_file": "ecchi.jpeg",
+  "hentai_denied_file": "hentai.jpeg",
+  "download_error_file": "download_error.jpeg"
 }

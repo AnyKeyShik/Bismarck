@@ -4,7 +4,7 @@ import re
 
 from fuzzywuzzy import fuzz
 
-from utils.logger import log_func, debug, DEBUG_LOG
+from core.utils.logger import log_func, debug, DEBUG_LOG
 
 
 def is_words_similar(string, model):
@@ -39,7 +39,6 @@ def prepare_msg(raw_message):
     raw_message = raw_message.replace("bismarkb1996", "")
     raw_message = raw_message.replace("id336383265", "")
     raw_message = re.sub('[^а-яА-Яa-zA-Z0-9\\s\\-]+', '', raw_message)
-    raw_message = re.sub(' +', ' ', raw_message)
 
     split_message = raw_message.split(" ")
     debug("Split message: " + str(split_message))

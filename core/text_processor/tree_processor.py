@@ -3,8 +3,8 @@
 from anytree import Node
 
 from core.exceptions import TagNotFoundException, RatingNotFoundException, CommandNotFoundException
-from utils.json_handler import JsonHandler
-from utils.logger import class_construct, info, debug, warning, log_func, DEBUG_LOG
+from core.utils.json_handler import JsonHandler
+from core.utils.logger import class_construct, info, debug, warning, log_func, DEBUG_LOG
 from .string_processor import is_words_similar, prepare_msg
 
 
@@ -162,7 +162,7 @@ class TreeProcessor(object):
 
         info("Get message '" + raw_message + "'")
         self._message = prepare_msg(raw_message)
-        debug("Processed message: '" + str(self._message) + "'")
+        debug("Processed message: " + str(self._message))
 
         tag_parent = self._tree
         command_parent = self._tree

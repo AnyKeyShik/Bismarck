@@ -4,7 +4,7 @@ import socket
 
 import socks
 
-from utils.logger import DEBUG_LOG, log_func
+from core.utils.logger import DEBUG_LOG, log_func
 
 
 @log_func(log_write=DEBUG_LOG)
