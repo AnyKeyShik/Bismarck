@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from core import CommandProcessor, TreeProcessor
-from core.utils.logger import *
+from core.command_processor import CommandProcessor
+from core.text_processor import TreeProcessor
+from core.utils.logger import class_construct, log_func
 
 
 class Kernel(object):

@@ -4,12 +4,11 @@ import json
 import re
 from random import randint
 
-from core import AnimeNotFoundException
+from core.exceptions import AnimeNotFoundException
 from .api_builder import ApiBuilder
 
 headers = {
-    "User-Agent": "Bismarck Bot",
-    # "Authorization": "there is your secret key",
+    "User-Agent": "Bismarck Bot"
 }
 
 API = ApiBuilder("https://shikimori.one/", headers=headers)
@@ -27,10 +26,10 @@ class ShikimoriGrabber(object):
     def _find_anime_by_name(name):
         data = json.loads(API.api.animes.get(search=name))
         if data:
-            id = data[0]["id"]
+            anime_id = data[0]["id"]
         else:
             raise AnimeNotFoundException("Anime by query \"{}\" is not found".format(name))
-        return id
+        return anime_id
 
     @staticmethod
     def _get_summary_comments(anime_id, starting_page=1, page_limit=5):

@@ -3,13 +3,12 @@
 from anytree import Node
 
 from core.exceptions import TagNotFoundException, RatingNotFoundException, CommandNotFoundException
-from core.utils.json_handler import JsonHandler
+from core.utils.json_handler import json_handler
 from core.utils.logger import class_construct, info, debug, warning, log_func, DEBUG_LOG
 from .string_processor import is_words_similar, prepare_msg
 
 
 class TreeProcessor(object):
-    _handler = None
     _tree = None
     _message = None
 
@@ -18,9 +17,10 @@ class TreeProcessor(object):
     _command = None
     _argument = None
 
+    _TAG = "TreeProcessor"
+
     @class_construct
     def __init__(self):
-        self._handler = JsonHandler()
         self._tree = None
 
         self._command = ""
@@ -36,11 +36,11 @@ class TreeProcessor(object):
         :rtype: bool
         """
 
-        debug("Check if string '" + string + "' is a command part")
+        debug(self._TAG, "Check if string '" + string + "' is a command part")
 
-        for j in self._handler.commands_parts:
+        for j in json_handler.commands_parts:
             if is_words_similar(string, j):
-                info("String '" + string + "' is a command part")
+                info(self._TAG, "String '" + string + "' is a command part")
                 return True
 
         return False
@@ -55,11 +55,11 @@ class TreeProcessor(object):
         :rtype: bool
         """
 
-        debug("Check if string '" + string + "' is a tag part")
+        debug(self._TAG, "Check if string '" + string + "' is a tag part")
 
-        for j in self._handler.tags_parts:
+        for j in json_handler.tags_parts:
             if is_words_similar(string, j):
-                info("String '" + string + "' is a tag part")
+                info(self._TAG, "String '" + string + "' is a tag part")
                 return True
 
         return False
@@ -74,11 +74,11 @@ class TreeProcessor(object):
         :rtype: bool
         """
 
-        debug("Check if string '" + string + "' is an ignored word")
+        debug(self._TAG, "Check if string '" + string + "' is an ignored word")
 
-        for j in self._handler.ignored:
+        for j in json_handler.ignored:
             if is_words_similar(string, j):
-                info("String '" + string + "' is an ignored word")
+                info(self._TAG, "String '" + string + "' is an ignored word")
                 return True
 
         return False
@@ -95,11 +95,11 @@ class TreeProcessor(object):
 
         correct_command = ""
 
-        debug("Get correct name for '" + string + "' as a command")
+        debug(self._TAG, "Get correct name for '" + string + "' as a command")
 
-        for j in self._handler.commands:
+        for j in json_handler.commands:
             if is_words_similar(string, j):
-                info("Correct name for '" + string + "' as command is '" + j + "'")
+                info(self._TAG, "Correct name for '" + string + "' as command is '" + j + "'")
                 correct_command = j
                 break
 
@@ -117,11 +117,11 @@ class TreeProcessor(object):
 
         correct_tag = ""
 
-        debug("Get correct name for '" + string + "' as a tag")
+        debug(self._TAG, "Get correct name for '" + string + "' as a tag")
 
-        for j in self._handler.tags:
+        for j in json_handler.tags:
             if is_words_similar(string, j):
-                info("Correct name for '" + string + "' as a tag is '" + j + "'")
+                info(self._TAG, "Correct name for '" + string + "' as a tag is '" + j + "'")
                 correct_tag = j
                 break
 
@@ -137,13 +137,13 @@ class TreeProcessor(object):
         :rtype: str
         """
 
-        debug("Get correct name for '" + string + "' as a rating name")
+        debug(self._TAG, "Get correct name for '" + string + "' as a rating name")
 
         correct_rating = ""
 
-        for j in self._handler.ratings:
+        for j in json_handler.ratings:
             if is_words_similar(string, j):
-                info("Correct name for '" + string + "' as a rating name is '" + j + "'")
+                info(self._TAG, "Correct name for '" + string + "' as a rating name is '" + j + "'")
                 correct_rating = j
 
         return correct_rating
@@ -160,15 +160,15 @@ class TreeProcessor(object):
 
         self._tree = Node("Message")
 
-        info("Get message '" + raw_message + "'")
+        info(self._TAG, "Get message '" + raw_message + "'")
         self._message = prepare_msg(raw_message)
-        debug("Processed message: " + str(self._message))
+        debug(self._TAG, "Processed message: " + str(self._message))
 
         tag_parent = self._tree
         command_parent = self._tree
 
         for i in range(len(self._message)):
-            debug("Processing '" + self._message[i] + "' message part")
+            debug(self._TAG, "Processing '" + self._message[i] + "' message part")
 
             if not (self._is_ignore(self._message[i])):
                 if self._is_tag_part(self._message[i]):
@@ -180,7 +180,7 @@ class TreeProcessor(object):
                         command_parent = Node(self._message[i], parent=command_parent)
                         tag_parent = self._tree
                 else:
-                    debug("'" + self._message[i] + "' message part is not part of tag or command")
+                    debug(self._TAG, "'" + self._message[i] + "' message part is not part of tag or command")
 
                     command_parent = self._tree
                     tag_parent = self._tree
@@ -202,41 +202,41 @@ class TreeProcessor(object):
         command = ""
 
         for i in self._tree.children:
-            debug("Process node '" + i.name + "'")
+            debug(self._TAG, "Process node '" + i.name + "'")
 
             if i.children == ():
                 arg_part = str(i.name)
 
-                debug("Node '" + i.name + "' has no child. Get correct name as tag")
+                debug(self._TAG, "Node '" + i.name + "' has no child. Get correct name as tag")
                 name = self._get_tag(str(i.name))  # Process as tag and get correct name if it exist
 
                 # If tag correct name doesn't exist
                 if name == "":
-                    debug("Node '" + i.name + "' has no child. Get correct name as command")
+                    debug(self._TAG, "Node '" + i.name + "' has no child. Get correct name as command")
                     name = self._get_command(str(i.name))  # Process as command and get correct name if it exist
 
                     # If command correct name doesn't exist
                     if name == "":
-                        debug("Node '" + i.name + "' has no child. Get correct name as rating")
+                        debug(self._TAG, "Node '" + i.name + "' has no child. Get correct name as rating")
                         name = self._get_rating(str(i.name))  # Process as rating and get correct name if it exist
 
                         if name == "":
-                            warning("Node '" + i.name + "' is not a tag, rating or command")
+                            warning(self._TAG, "Node '" + i.name + "' is not a tag, rating or command")
                         else:
-                            debug("Set rating: '" + name + "'")
+                            debug(self._TAG, "Set rating: '" + name + "'")
                             rating = name
 
                     else:
-                        debug("Set command: '" + name + "'")
+                        debug(self._TAG, "Set command: '" + name + "'")
                         command = name  # Add command to return
                         arg_part = ""
 
                 else:
-                    debug("Add tag: '" + name + "'")
+                    debug(self._TAG, "Add tag: '" + name + "'")
                     tags.append(name)  # Add tag to return
 
             else:
-                debug("Node '" + i.name + "' has child. Get it")
+                debug(self._TAG, "Node '" + i.name + "' has child. Get it")
 
                 # Get full string from parent and children
                 child_name = i.name + " "
@@ -247,23 +247,23 @@ class TreeProcessor(object):
                 child_name = child_name[:len(child_name) - 1]
                 arg_part = child_name
 
-                debug("Nodes '" + child_name + "' has no child. Get correct name as tag")
+                debug(self._TAG, "Nodes '" + child_name + "' has no child. Get correct name as tag")
                 name = self._get_tag(child_name)  # Process as tag and get correct name if it exist
 
                 # If tag correct name doesn't exist
                 if name == "":
-                    debug("Nodes '" + child_name + "' has no child. Get correct name as command")
+                    debug(self._TAG, "Nodes '" + child_name + "' has no child. Get correct name as command")
                     name = self._get_command(child_name)  # Process as command and get correct name if it exist
 
                     if name == "":
-                        warning("Nodes '" + child_name + "' is not a tag, rating or command")
+                        warning(self._TAG, "Nodes '" + child_name + "' is not a tag, rating or command")
                     else:
-                        debug("Set command: '" + name + "'")
+                        debug(self._TAG, "Set command: '" + name + "'")
                         command = name  # Add command to return
                         arg_part = ""
 
                 else:
-                    debug("Add tag: '" + name + "'")
+                    debug(self._TAG, "Add tag: '" + name + "'")
                     tags.append(name)  # Add tag to return
 
             if arg_part != "":
@@ -285,7 +285,7 @@ class TreeProcessor(object):
         try:
             tags = self._tags
             self._tags = None
-            return [self._handler.tag_present(x) for x in tags]
+            return [json_handler.tag_present(x) for x in tags]
         except TagNotFoundException:
             return [""]
 
@@ -301,7 +301,7 @@ class TreeProcessor(object):
         try:
             rating = self._rating
             self._rating = None
-            return self._handler.rating_present(rating)
+            return json_handler.rating_present(rating)
         except RatingNotFoundException:
             return ""
 
@@ -319,7 +319,7 @@ class TreeProcessor(object):
             argument = self._argument
             self._command = None
             self._argument = []
-            return self._handler.command_present(command), argument
+            return json_handler.command_present(command), argument
         except CommandNotFoundException:
             return "", ""
 

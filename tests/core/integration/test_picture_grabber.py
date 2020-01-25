@@ -18,7 +18,7 @@ class TestPictureGrabber(unittest.TestCase):
         print("Start successful test for get picture")
 
         pg = PictureGrabber()
-        url = pg.get_picture("seifuku", "explicit", False)
+        url = pg.get_picture("seifuku", "explicit", True)
         self.assertNotEqual('', url)
 
         print("Successful test for get picture successfully!")

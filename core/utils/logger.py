@@ -54,60 +54,70 @@ def class_construct(init):
     return wrapper
 
 
-def debug(message):
+def debug(tag, message):
     """
     Write in debug-log
 
+    :param tag: tag for logging
     :param message: message for write
     :return: None
+    :rtype: None
     """
 
     if DEBUG_LOG:
-        logging.debug("~" * 5 + ">" + message)
+        logging.debug(str(tag) + ": " + "~" * 5 + ">" + str(message))
 
 
-def info(message):
+def info(tag, message):
     """
     Write in info-log
 
+    :param tag: tag for logging
     :param message: message for write
     :return: None
+    :rtype: None
     """
 
-    logging.info("~" * 5 + ">" + message)
+    logging.info(str(tag) + ": " + "~" * 5 + ">" + str(message))
 
 
-def warning(message):
+def warning(tag, message):
     """
     Write in warning-log
 
+    :param tag: tag for logging
     :param message: message for write
     :return: None
+    :rtype: None
     """
 
-    logging.warning("!" + "-" * 5 + "!" + ">" + message)
+    logging.warning(str(tag) + ": " + "!" + "-" * 5 + "!" + ">" + str(message))
 
 
-def error(message):
+def error(tag, message):
     """
     Write in error-log
 
+    :param tag: tag for logging
     :param message: message for write
     :return: None
+    :rtype: None
     """
 
-    logging.error("!" + "-" * 5 + "!" + ">" + message)
+    logging.error(str(tag) + ": " + "!" + "-" * 5 + "!" + ">" + str(message))
 
 
-def critical(message):
+def critical(tag, message):
     """
     Write in critical-log
 
+    :param tag: tag for logging
     :param message: message for write
     :return: None
+    :rtype: None
     """
 
-    logging.critical("!" * 5 + ">" + message)
+    logging.critical(str(tag) + ": " + "!" * 5 + ">" + str(message))
 
 
 def log_message(message, user, answer):

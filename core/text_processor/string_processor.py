@@ -6,6 +6,8 @@ from fuzzywuzzy import fuzz
 
 from core.utils.logger import log_func, debug, DEBUG_LOG
 
+TAG = "StringProcessor"
+
 
 def is_words_similar(string, model):
     """
@@ -41,7 +43,7 @@ def prepare_msg(raw_message):
     raw_message = re.sub('[^а-яА-Яa-zA-Z0-9\\s\\-]+', '', raw_message)
 
     split_message = raw_message.split(" ")
-    debug("Split message: " + str(split_message))
+    debug(TAG, "Split message: " + str(split_message))
 
     message = []
     for msg in [x.split("-") for x in split_message]:

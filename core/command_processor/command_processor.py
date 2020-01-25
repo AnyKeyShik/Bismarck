@@ -5,7 +5,7 @@ import random
 from core.exceptions import AnimeNotFoundException, PictureNotFoundException, TagsNotFoundException, \
     EcchiDeniedException, HentaiDeniedException, DownloadErrorException
 from core.utils import ShikimoriGrabber, PictureGrabber
-from core.utils.json_handler import JsonHandler
+from core.utils.json_handler import json_handler
 from core.utils.logger import class_construct
 
 
@@ -14,7 +14,6 @@ class CommandProcessor(object):
     _argument = None
 
     _actions = None
-    _handler = None
 
     @class_construct
     def __init__(self):
@@ -22,7 +21,7 @@ class CommandProcessor(object):
         Constructor for CommandProcessor
         """
 
-        self._handler = JsonHandler()
+        # json_handler = json_handler
 
         self._actions = {
             "about": self._about,
@@ -40,8 +39,8 @@ class CommandProcessor(object):
 
         :param command: command from user
         :param arguments: command argument
-        :return: string with answer for user (in some case returning list)
-        :rtype: str
+        :return: string with answer for user (in some case returning pair of str)
+        :rtype: str or (str, str)
         """
 
         self._command = command
@@ -63,42 +62,43 @@ class CommandProcessor(object):
             if len(anime_name) > 0:
                 return grabber.get_anime(anime_name)
             else:
-                return self._handler.messages['no_anime_given_answer']
+                return json_handler.messages['no_anime_given_answer']
         except AnimeNotFoundException:
-            return self._handler.messages['no_anime_answer'] + anime_name
+            return json_handler.messages['no_anime_answer'] + anime_name
 
-    def _hello(self):
+    @staticmethod
+    def _hello():
         """
         Hello message
 
         :return: hello message
         :rtype: str
         """
-        return self._handler.messages['hello_answer']
+        return json_handler.messages['hello_answer']
 
     def _picture(self):
         """
         Picture by tag and rating
 
         :return: pair of picture url and filename
-        :rtype: str
+        :rtype: (str, str)
         """
         grabber = PictureGrabber()
 
         try:
             grabber.get_picture(self._argument[0], self._argument[1], self._argument[2])
 
-            return self._handler.messages['picture_answer'], self._handler.constants['default_picture_file']
+            return json_handler.messages['picture_answer'], json_handler.constants['default_picture_file']
         except PictureNotFoundException:
-            return self._handler.messages['no_picture_answer'], self._handler.constants['picture_not_found_file']
+            return json_handler.messages['no_picture_answer'], json_handler.constants['picture_not_found_file']
         except TagsNotFoundException:
-            return self._handler.messages['no_tags_answer'], self._handler.constants['no_tags_found_file']
+            return json_handler.messages['no_tags_answer'], json_handler.constants['no_tags_found_file']
         except EcchiDeniedException:
-            return self._handler.messages['ecchi_denied_answer'], self._handler.constants['ecchi_denied_file']
+            return json_handler.messages['ecchi_denied_answer'], json_handler.constants['ecchi_denied_file']
         except HentaiDeniedException:
-            return self._handler.messages['hentai_denied_answer'], self._handler.constants['hentai_denied_file']
+            return json_handler.messages['hentai_denied_answer'], json_handler.constants['hentai_denied_file']
         except DownloadErrorException:
-            return self._handler.messages['download_error_answer'], self._handler.constants['download_error_file']
+            return json_handler.messages['download_error_answer'], json_handler.constants['download_error_file']
 
     def _roll(self):
         """
@@ -117,33 +117,36 @@ class CommandProcessor(object):
 
             return choices[num // 100]
         else:
-            return self._handler.messages['no_choices_answer']
+            return json_handler.messages['no_choices_answer']
 
-    def _tags(self):
+    @staticmethod
+    def _tags():
         """
-        List of avialivle tags
+        List of available tags
 
         :return: list of tags
         :rtype: str
         """
 
-        return self._handler.tags_user
+        return json_handler.tags_user
 
-    def _commands(self):
+    @staticmethod
+    def _commands():
         """
-        List of avialivle commands
+        List of available commands
 
         :return: list of commands
         :rtype: str
         """
 
-        return self._handler.commands_user
+        return json_handler.commands_user
 
-    def _error(self):
+    @staticmethod
+    def _error():
         """
         Message with bugs description
 
         :return: bug message
         :rtype: str
         """
-        return self._handler.messages['errors_answer']
+        return json_handler.messages['errors_answer']

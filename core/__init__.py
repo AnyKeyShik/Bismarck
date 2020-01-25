@@ -5,3 +5,4 @@ from .exceptions import AnimeNotFoundException, CommandNotFoundException, Pictur
     RatingNotFoundException, TagNotFoundException, TooManyRequestsException, UnexpectedCodeException, \
     TagsNotFoundException, HentaiDeniedException, EcchiDeniedException, DownloadErrorException
 from .text_processor import TreeProcessor
+from .utils.logger import *
