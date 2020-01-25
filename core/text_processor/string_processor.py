@@ -4,7 +4,7 @@ import re
 
 from fuzzywuzzy import fuzz
 
-from core.utils.logger import log_func, debug, DEBUG_LOG
+from core.logger import log_func, debug, DEBUG_LOG
 
 TAG = "StringProcessor"
 

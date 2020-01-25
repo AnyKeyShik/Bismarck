@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from core.utils.logger import class_construct
+from core.logger import class_construct
 from .grabber import Grabber
 
 

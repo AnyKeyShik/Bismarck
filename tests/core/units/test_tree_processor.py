@@ -40,7 +40,7 @@ class TestTreeProcessor(unittest.TestCase):
 
         tree = cls.sp.get_tree()
 
-        for pre, fill, node in RenderTree(tree):
+        for pre, _, node in RenderTree(tree):
             print("%s%s" % (pre, node.name))
 
         print("=" * 50 + "\nFinish tests!")

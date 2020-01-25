@@ -6,8 +6,8 @@ import requests
 
 from core.exceptions import PictureNotFoundException, TagsNotFoundException, EcchiDeniedException, \
     HentaiDeniedException, DownloadErrorException
+from core.logger import class_construct, log_func, info, debug
 from core.utils.json_handler import json_handler
-from core.utils.logger import class_construct, log_func, info, debug
 from .konachan_grabber import KonachanGrabber as KonaGrabber
 from .yandere_grabber import YandereGrabber as YandeGrabber
 

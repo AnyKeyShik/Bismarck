@@ -17,7 +17,7 @@ class UnexpectedCodeException(Exception):
 def retry_on_error(retries_count=3, delay=0.1):
     def decorator(func):
         def new_func(*args, **kwargs):
-            for try_count in range(retries_count):
+            for _ in range(retries_count):
                 try:
                     return func(*args, **kwargs)
                 except TooManyRequestsException:
@@ -32,6 +32,7 @@ def raise_exception_by_code(code):
         raise TooManyRequestsException()
     if code != 200:
         raise UnexpectedCodeException()
+
 
 class ApiPath(object):
     def __init__(self, base, headers):

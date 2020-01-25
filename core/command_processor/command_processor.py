@@ -4,9 +4,9 @@ import random
 
 from core.exceptions import AnimeNotFoundException, PictureNotFoundException, TagsNotFoundException, \
     EcchiDeniedException, HentaiDeniedException, DownloadErrorException
+from core.logger import class_construct
 from core.utils import ShikimoriGrabber, PictureGrabber
 from core.utils.json_handler import json_handler
-from core.utils.logger import class_construct
 
 
 class CommandProcessor(object):

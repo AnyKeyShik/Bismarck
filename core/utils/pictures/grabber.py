@@ -4,7 +4,7 @@ from json.decoder import JSONDecodeError
 
 import requests
 
-from core.utils.logger import log_func, debug, info, DEBUG_LOG
+from core.logger import log_func, debug, info, DEBUG_LOG
 
 
 class Grabber(object):

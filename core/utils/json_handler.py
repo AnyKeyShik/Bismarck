@@ -5,7 +5,7 @@ import json
 import pkg_resources
 
 from core.exceptions import TagNotFoundException, RatingNotFoundException, CommandNotFoundException
-from core.utils.logger import debug
+from core.logger import debug
 
 
 class JsonHandler(object):
@@ -219,7 +219,6 @@ class JsonHandler(object):
             return self._ratings[rating]
         except KeyError:
             raise RatingNotFoundException()
-            pass
 
     @property
     def ignored(self):

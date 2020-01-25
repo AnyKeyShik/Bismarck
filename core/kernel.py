@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from core.command_processor import CommandProcessor
+from core.logger import class_construct, log_func
 from core.text_processor import TreeProcessor
-from core.utils.logger import class_construct, log_func
 
 
 class Kernel(object):

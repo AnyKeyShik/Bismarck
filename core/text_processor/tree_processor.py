@@ -3,8 +3,8 @@
 from anytree import Node
 
 from core.exceptions import TagNotFoundException, RatingNotFoundException, CommandNotFoundException
+from core.logger import class_construct, info, debug, warning, log_func, DEBUG_LOG
 from core.utils.json_handler import json_handler
-from core.utils.logger import class_construct, info, debug, warning, log_func, DEBUG_LOG
 from .string_processor import is_words_similar, prepare_msg
 
 
