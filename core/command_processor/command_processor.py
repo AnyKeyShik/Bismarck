@@ -4,7 +4,7 @@ import random
 
 from core.exceptions import AnimeNotFoundException, PictureNotFoundException, TagsNotFoundException, \
     EcchiDeniedException, HentaiDeniedException, DownloadErrorException
-from core.logger import class_construct
+from core.logger import class_construct, debug
 from core.utils import ShikimoriGrabber, PictureGrabber
 from core.utils.json_handler import json_handler
 
@@ -12,6 +12,8 @@ from core.utils.json_handler import json_handler
 class CommandProcessor(object):
     _command = None
     _argument = None
+
+    _TAG = "CommandProcessor"
 
     _actions = None
 
@@ -114,13 +116,15 @@ class CommandProcessor(object):
         while choices.count("или") != 0:
             choices.remove("или")
 
-        for i in range(len(choices)):
-            if choices[i].find(" ") == 0:
-                choices[i] = choices[i].replace(" ", "", 1)
-            if choices[i].rfind(" ") == len(choices) - 1:
-                choices[i] = choices[i][:len(choices[i]) - 1]
+        for index, word in enumerate(choices):
+            if word.find(" ") == 0:
+                choices[index] = word.replace(" ", "", 1)
+            if word.rfind(" ") == len(word) - 1:
+                choices[index] = word[:len(word) - 1]
 
         choices = list(filter(None, choices))
+
+        debug(self._TAG, "Available choices: " + str(choices))
 
         if len(choices) > 1:
 
