@@ -109,7 +109,18 @@ class CommandProcessor(object):
         """
 
         sentence = " ".join(self._argument)
-        choices = sentence.split(" или ")
+        choices = sentence.split("или")
+
+        while choices.count("или") != 0:
+            choices.remove("или")
+
+        for i in range(len(choices)):
+            if choices[i].find(" ") == 0:
+                choices[i] = choices[i].replace(" ", "", 1)
+            if choices[i].rfind(" ") == len(choices) - 1:
+                choices[i] = choices[i][:len(choices[i]) - 1]
+
+        choices = list(filter(None, choices))
 
         if len(choices) > 1:
 

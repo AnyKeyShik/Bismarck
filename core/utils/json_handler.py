@@ -138,7 +138,6 @@ class JsonHandler(object):
             return self._commands[command]
         except KeyError:
             raise CommandNotFoundException()
-            pass
 
     @property
     def tags(self):
@@ -192,7 +191,6 @@ class JsonHandler(object):
             return self._tags[tag]
         except KeyError:
             raise TagNotFoundException()
-            pass
 
     @property
     def ratings(self):
