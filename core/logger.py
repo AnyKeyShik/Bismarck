@@ -7,7 +7,7 @@ import os
 # Constants for logging
 _log_message_format = '%(levelname)s - %(asctime)-10s %(message)s'
 _message_format = 'Message "%s" from "%s" with answer "%s"'
-_message_log_filename = os.path.join(os.path.dirname(__file__), os.environ['BISMARK_HOME'] + "/logs/bismark_" +
+_message_log_filename = os.path.join(os.path.dirname(__file__), os.environ['BISMARCK_HOME'] + "/logs/bismark_" +
                                      datetime.datetime.now().strftime("%Y_%m_%d_%H-%M-%S") + ".log")
 
 # Init logging

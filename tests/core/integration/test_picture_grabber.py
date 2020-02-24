@@ -2,7 +2,7 @@
 
 import unittest
 
-from core import PictureNotFoundException
+from core.exceptions import PictureNotFoundException
 from core.utils.pictures import PictureGrabber
 from core.utils.proxy import patch
 

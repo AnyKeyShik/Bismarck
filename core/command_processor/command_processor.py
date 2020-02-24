@@ -23,8 +23,6 @@ class CommandProcessor(object):
         Constructor for CommandProcessor
         """
 
-        # json_handler = json_handler
-
         self._actions = {
             "about": self._about,
             "hello": self._hello,
