@@ -45,6 +45,14 @@ class VkHandler(object):
                     info(self._TAG, "New message: '" + str(event.text) + "'")
 
                     answer = self._kernel.talk(str(event.text), event.from_user)
+                    peer_id = 0
+
+                    if event.from_user:
+                        peer_id = event.user_id
+                    elif event.from_chat:
+                        peer_id = 2000000000 + event.chat_id
+                    else:
+                        peer_id = 0 - event.group_id
 
                     if isinstance(answer, tuple):
                         message, picture = answer
@@ -52,14 +60,14 @@ class VkHandler(object):
                         picture_id = self._vk_upload.photo_messages(photos=picture)
                         attachment = "photo{}_{}".format(picture_id[0]['owner_id'], picture_id[0]['id'])
                         self._vk_api.messages.send(
-                            user_id=event.user_id,
+                            peer_id=peer_id,
                             message=message,
                             random_id=randint(0, 1000000000000000),
                             attachment=attachment
                         )
                     else:
                         self._vk_api.messages.send(
-                            user_id=event.user_id,
+                            peer_id=peer_id,
                             message=answer,
                             random_id=randint(0, 1000000000000000)
                         )
