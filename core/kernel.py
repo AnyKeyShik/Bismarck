@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from core.command_processor import CommandProcessor
-from core.logger import class_construct, log_func
+from core.logger import class_construct
 from core.text_processor import TreeProcessor
 
 
@@ -14,7 +14,7 @@ class Kernel(object):
         self._tree_processor = TreeProcessor()
         self._command_handler = CommandProcessor()
 
-    @log_func
+    # @log_func
     def talk(self, message, from_user):
         """
         Main function what send requests to the processors
@@ -34,8 +34,8 @@ class Kernel(object):
             msg_tags = self._tree_processor.get_tags()
             msg_rating = self._tree_processor.get_rating()
 
-            result = list(self._command_handler.execute(msg_command, [msg_tags, msg_rating, from_user]))
+            result = self._command_handler.execute(msg_command, [msg_tags, msg_rating, from_user])
         else:
-            result = list(self._command_handler.execute(msg_command, msg_args))
+            result = self._command_handler.execute(msg_command, msg_args)
 
         return result

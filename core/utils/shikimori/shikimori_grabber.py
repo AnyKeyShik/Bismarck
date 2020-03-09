@@ -70,7 +70,7 @@ class ShikimoriGrabber(object):
 #
 #
 # r = requests.get(
-#     "https://shikimori.org/api/users/whoami",
+#     "https://shikimori.one/api/users/whoami",
 #     headers=headers
 # )
 #
