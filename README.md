@@ -42,7 +42,7 @@ To compile and run this project, you will need:
 ##### With Docker
 1. Build image (`docker build -t <image_name> .`) or pull from Docker hub (`docker pull anykeyshik/bismarck`)
 2. Create folder for logs
-3. Start container with your folder (`docker run -d -v <your_folder>:/Bismarck/logs -t anykeyshik/bismarck`)
+3. Start container with your folder (`docker run --restart=always -d -v <your_folder>:/Bismarck/logs -t anykeyshik/bismarck`)
 
 # In future:
 * Give random picture through random or fixed time intervals
