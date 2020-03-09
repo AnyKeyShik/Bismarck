@@ -51,7 +51,6 @@ class VkHandler(object):
                         picture = self._picture_dir + picture
                         picture_id = self._vk_upload.photo_messages(photos=picture)
                         attachment = "photo{}_{}".format(picture_id[0]['owner_id'], picture_id[0]['id'])
-                        print(attachment)
                         self._vk_api.messages.send(
                             user_id=event.user_id,
                             message=message,

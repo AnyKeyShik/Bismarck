@@ -3,7 +3,7 @@
 import random
 
 from core.exceptions import AnimeNotFoundException, PictureNotFoundException, TagsNotFoundException, \
-    EcchiDeniedException, HentaiDeniedException, DownloadErrorException
+    EcchiDeniedException, HentaiDeniedException
 from core.logger import class_construct, debug
 from core.utils import ShikimoriGrabber, PictureGrabber
 from core.utils.json_handler import json_handler
@@ -97,7 +97,7 @@ class CommandProcessor(object):
             return json_handler.messages['ecchi_denied_answer'], json_handler.constants['ecchi_denied_file']
         except HentaiDeniedException:
             return json_handler.messages['hentai_denied_answer'], json_handler.constants['hentai_denied_file']
-        except DownloadErrorException:
+        except Exception:
             return json_handler.messages['download_error_answer'], json_handler.constants['download_error_file']
 
     def _roll(self):
