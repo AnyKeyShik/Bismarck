@@ -3,7 +3,7 @@ name: Feature request
 about: Предложите свою идею для развития бота!
 title: "[FEATURE]"
 labels: enhancement
-assignees: AnyKeyShik, venikman1
+assignees: AnyKeyShik
 
 ---
 

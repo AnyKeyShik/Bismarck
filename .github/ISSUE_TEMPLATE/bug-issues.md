@@ -3,7 +3,7 @@ name: Bug issues
 about: Любые неточности, косяки, баги. etc - все сюда
 title: "[BUG]"
 labels: bug
-assignees: AnyKeyShik, venikman1
+assignees: AnyKeyShik
 
 ---
 
