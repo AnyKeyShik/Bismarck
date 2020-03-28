@@ -1,0 +1,13 @@
+logs/
+.idea/
+.git/
+.github/
+*__pycache__/
+tests/
+venv/
+data/
+.gitignore
+README.md
+LICENSE
+Dockerfile
+pictures/answer.jpeg

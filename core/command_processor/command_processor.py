@@ -30,7 +30,8 @@ class CommandProcessor(object):
             "roll": self._roll,
             "tags": self._tags,
             "commands": self._commands,
-            "error": self._error
+            "error": self._error,
+            "kek": self._kek
         }
 
     def execute(self, command, arguments):
@@ -131,6 +132,17 @@ class CommandProcessor(object):
             return choices[num // 100]
         else:
             return json_handler.messages['no_choices_answer']
+
+    @staticmethod
+    def _kek():
+        """
+        Just KEK
+
+        :return: KEK
+        :rtype: str
+        """
+
+        return json_handler.messages['kek']
 
     @staticmethod
     def _tags():

@@ -36,13 +36,15 @@ To compile and run this project, you will need:
 #### Deploy
 
 ##### Without Docker
-1. Install requirements
-2. Run `run.py` 
+1. Fill constants for auth to [VK](https://vk.com)
+2. Install requirements
+3. Run `run.py` 
 
 ##### With Docker
-1. Build image (`docker build -t <image_name> .`) or pull from Docker hub (`docker pull anykeyshik/bismarck`)
-2. Create folder for logs
-3. Start container with your folder (`docker run --restart=always -d -v <your_folder>:/Bismarck/logs -t anykeyshik/bismarck`)
+1. Fill constants for auth to [VK](https://vk.com)
+2. Build image (`docker build -t <image_name> .`)
+3. Create folder for logs
+4. Start container with your folder (`docker run --restart=always -d -v <your_folder>:/Bismarck/logs -t <image_name>`)
 
 # In future:
 * Give random picture through random or fixed time intervals
