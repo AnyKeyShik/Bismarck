@@ -28,8 +28,7 @@ To compile and run this project, you will need:
 * requests
 * vk_api
 * anytree
-* fuzzywuzzy
-* python-Levenshtein
+* rapidfuzz
 * PySocks (optional, for proxy if needed)
 * Python3
 

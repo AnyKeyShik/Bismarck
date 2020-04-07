@@ -2,7 +2,7 @@
 
 import re
 
-from fuzzywuzzy import fuzz
+from rapidfuzz import fuzz
 
 from core.logger import log_func, debug, DEBUG_LOG
 
@@ -19,7 +19,7 @@ def is_words_similar(string, model):
     :rtype: bool
     """
 
-    if fuzz.ratio(string, model) >= 75:
+    if fuzz.ratio(string, model, score_cutoff=75):
         return True
 
     return False
