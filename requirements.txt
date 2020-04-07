@@ -1,7 +1,6 @@
 requests
 vk_api
 anytree
-fuzzywuzzy
-python-levenshtein
+rapidfuzz
 
 PySocks
