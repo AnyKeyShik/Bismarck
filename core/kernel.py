@@ -6,7 +6,15 @@
 #  #
 #   Telegram: @AnyKeyShik
 #   GitHub: https://github.com/AnyKeyShik
-#   E-mail: nikitav59@gmail.com
+#   E-mail: nikitag594@gmail.com
+
+#   Copyright (c) 2020.
+#  #
+#   Created by AnyKeyShik Rarity
+#  #
+#   Telegram: @AnyKeyShik
+#   GitHub: https://github.com/AnyKeyShik
+#   E-mail: nikitag594@gmail.com
 
 from core.command_processor import CommandProcessor
 from core.text_processor import TreeProcessor

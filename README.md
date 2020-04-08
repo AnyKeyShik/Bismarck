@@ -18,6 +18,8 @@ Bot for MSU Anime Club
 # Now:
 * Grab pictures with tags and rating what user gives
 * Get feedback for anime what user gives
+* Choice from several variants
+* KEK
 
 
 # Getting started
