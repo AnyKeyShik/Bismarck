@@ -29,6 +29,7 @@ To compile and run this project, you will need:
 * vk_api
 * anytree
 * rapidfuzz
+* pyyaml
 * PySocks (optional, for proxy if needed)
 * Python3
 
