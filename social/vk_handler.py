@@ -1,5 +1,13 @@
 # -*- coding: utf-8 -*-
 
+#   Copyright (c) 2020.
+#  #
+#   Created by AnyKeyShik Rarity
+#  #
+#   Telegram: @AnyKeyShik
+#   GitHub: https://github.com/AnyKeyShik
+#   E-mail: nikitav59@gmail.com
+
 import os
 from random import randint
 
@@ -8,8 +16,8 @@ from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.upload import VkUpload
 
 from core import Kernel
-from core.logger import class_construct, debug, info
 from core.utils.json_handler import json_handler
+from . import logger
 
 
 class VkHandler(object):
@@ -21,9 +29,7 @@ class VkHandler(object):
     _kernel = None
     _picture_dir = None
 
-    _TAG = "VkHandler"
-
-    @class_construct
+    @logger.class_construct
     def __init__(self):
         self._auth_consts = json_handler.auth_constants
         self._vk_session = VkApi(token=self._auth_consts['api_token'], app_id=self._auth_consts['app_id'],
@@ -38,14 +44,13 @@ class VkHandler(object):
         for event in longpoll.listen():
 
             if event.type == VkEventType.MESSAGE_NEW:
-                debug(self._TAG, "New message: '" + str(event.text) + "'")
+                logger.debug("New message: '" + str(event.text) + "'")
 
                 if (event.from_user and not event.from_me) or \
                         (event.from_chat and event.text.find('id336383265') != -1) or event.from_group:
-                    info(self._TAG, "New message: '" + str(event.text) + "'")
+                    logger.info("New message: '" + str(event.text) + "'")
 
                     answer = self._kernel.talk(str(event.text), event.from_user)
-                    peer_id = 0
 
                     if event.from_user:
                         peer_id = event.user_id

@@ -1,17 +1,24 @@
 # -*- coding: utf-8 -*-
 
+#   Copyright (c) 2020.
+#  #
+#   Created by AnyKeyShik Rarity
+#  #
+#   Telegram: @AnyKeyShik
+#   GitHub: https://github.com/AnyKeyShik
+#   E-mail: nikitav59@gmail.com
+
 from json.decoder import JSONDecodeError
 
 import requests
 
-from core.logger import log_func, debug, info, DEBUG_LOG
+from core.utils import logger
 
 
 class Grabber(object):
     _url = ""
-    _TAG = "Grabber"
 
-    @log_func(log_write=DEBUG_LOG)
+    @logger.log_func
     def get_picture(self, tags, rating):
         """
         Get picture with tag and rating
@@ -21,27 +28,27 @@ class Grabber(object):
         :return: picture url and hash or empty strings
         :rtype: (str, str)
         """
-        info(self._TAG, "get_picture()")
+        logger.info("get_picture()")
 
         url = self._url % (tags, rating)
 
-        debug(self._TAG, "Get url: " + str(url))
+        logger.debug("Get url: " + str(url))
 
         try:
             picture_object = requests.get(url).json()
         except ConnectionError:
-            info(self._TAG, "Return empty strings: connection error")
+            logger.info("Return empty strings: connection error")
             return "", ""
         except JSONDecodeError:
-            info(self._TAG, "Picture not found")
+            logger.info("Picture not found")
             return "", ""
 
-        debug(self._TAG, "Get picture: " + str(picture_object))
+        logger.debug("Get picture: " + str(picture_object))
 
         try:
-            info(self._TAG, "Try to return picture link and hash")
+            logger.info("Try to return picture link and hash")
             return picture_object[0]['file_url'], picture_object[0]['md5']
 
         except Exception:
-            info(self._TAG, "Return empty strings: picture not found")
+            logger.info("Return empty strings: picture not found")
             return "", ""

@@ -1,15 +1,23 @@
 # -*- coding: utf-8 -*-
 
+#   Copyright (c) 2020.
+#  #
+#   Created by AnyKeyShik Rarity
+#  #
+#   Telegram: @AnyKeyShik
+#   GitHub: https://github.com/AnyKeyShik
+#   E-mail: nikitav59@gmail.com
+
 from core.command_processor import CommandProcessor
-from core.logger import class_construct
 from core.text_processor import TreeProcessor
+from . import logger
 
 
 class Kernel(object):
     _tree_processor = None
     _command_handler = None
 
-    @class_construct
+    @logger.class_construct
     def __init__(self):
         self._tree_processor = TreeProcessor()
         self._command_handler = CommandProcessor()

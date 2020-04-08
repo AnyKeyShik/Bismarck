@@ -1,12 +1,20 @@
 # -*- coding: utf-8 -*-
 
+#   Copyright (c) 2020.
+#  #
+#   Created by AnyKeyShik Rarity
+#  #
+#   Telegram: @AnyKeyShik
+#   GitHub: https://github.com/AnyKeyShik
+#   E-mail: nikitav59@gmail.com
+
 import random
 
 from core.exceptions import AnimeNotFoundException, PictureNotFoundException, TagsNotFoundException, \
     EcchiDeniedException, HentaiDeniedException
-from core.logger import class_construct, debug
 from core.utils import ShikimoriGrabber, PictureGrabber
 from core.utils.json_handler import json_handler
+from . import logger
 
 
 class CommandProcessor(object):
@@ -17,7 +25,7 @@ class CommandProcessor(object):
 
     _actions = None
 
-    @class_construct
+    @logger.class_construct
     def __init__(self):
         """
         Constructor for CommandProcessor
@@ -46,6 +54,8 @@ class CommandProcessor(object):
 
         self._command = command
         self._argument = arguments
+
+        logger.debug("Execute " + str(command) + " with arguments " + str(arguments))
 
         return self._actions[self._command]()
 
@@ -98,7 +108,8 @@ class CommandProcessor(object):
             return json_handler.messages['ecchi_denied_answer'], json_handler.constants['ecchi_denied_file']
         except HentaiDeniedException:
             return json_handler.messages['hentai_denied_answer'], json_handler.constants['hentai_denied_file']
-        except Exception:
+        except Exception as err:
+            logger.error("Download error: {0}".format(err))
             return json_handler.messages['download_error_answer'], json_handler.constants['download_error_file']
 
     def _roll(self):
@@ -123,7 +134,7 @@ class CommandProcessor(object):
 
         choices = list(filter(None, choices))
 
-        debug(self._TAG, "Available choices: " + str(choices))
+        logger.info("Available choices: " + str(choices))
 
         if len(choices) > 1:
 

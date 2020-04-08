@@ -1,34 +1,25 @@
 # -*- coding: utf-8 -*-
 
+#   Copyright (c) 2020.
+#  #
+#   Created by AnyKeyShik Rarity
+#  #
+#   Telegram: @AnyKeyShik
+#   GitHub: https://github.com/AnyKeyShik
+#   E-mail: nikitav59@gmail.com
+
 import json
 
 import pkg_resources
 
 from core.exceptions import TagNotFoundException, RatingNotFoundException, CommandNotFoundException
-from core.logger import debug
+from . import logger
 
 
 class JsonHandler(object):
     """
     Handler for simple get stuff like a pictures tags, ratings and ignored words
     """
-
-    _resource_package = None
-    _resource_path = None
-
-    _tags = None
-    _tags_user = None
-    _commands = None
-    _commands_user = None
-    _ratings = None
-    _ignored = None
-
-    _consts = None
-    _auth_consts = None
-    _messages = None
-
-    _TAG = "JsonHandler"
-
     def __init__(self):
         self._resource_package = __name__
 
@@ -37,7 +28,7 @@ class JsonHandler(object):
         line = template.read().decode('utf-8')
         self._tags = json.loads(line)['tags']
         self._tags_user = json.loads(line)['user_tags']
-        debug(self._TAG, "Get tags list for user")
+        logger.debug("Get tags list for user")
         template.close()
 
         self._resource_path = '/'.join(('../../static', 'commands.json'))
@@ -45,14 +36,14 @@ class JsonHandler(object):
         line = template.read().decode('utf-8')
         self._commands = json.loads(line)['commands']
         self._commands_user = json.loads(line)['commands_user']
-        debug(self._TAG, "Get command list for user")
+        logger.debug("Get command list for user")
         template.close()
 
         self._resource_path = '/'.join(('../../static', 'ratings.json'))
         template = pkg_resources.resource_stream(self._resource_package, self._resource_path)
         line = template.read().decode('utf-8')
         self._ratings = json.loads(line)['ratings']
-        debug(self._TAG, "Get ratings")
+        logger.debug("Get ratings")
 
         template.close()
 
@@ -60,28 +51,28 @@ class JsonHandler(object):
         template = pkg_resources.resource_stream(self._resource_package, self._resource_path)
         line = template.read().decode('utf-8')
         self._ignored = json.loads(line)['words']
-        debug(self._TAG, "Get list of ignored words")
+        logger.debug("Get list of ignored words")
         template.close()
 
         self._resource_path = '/'.join(('../../static', 'consts.json'))
         template = pkg_resources.resource_stream(self._resource_package, self._resource_path)
         line = template.read().decode('utf-8')
         self._consts = json.loads(line)
-        debug(self._TAG, "Get constants")
+        logger.debug("Get constants")
         template.close()
 
         self._resource_path = '/'.join(('../../static', 'auth_consts.json'))
         template = pkg_resources.resource_stream(self._resource_package, self._resource_path)
         line = template.read().decode('utf-8')
         self._auth_consts = json.loads(line)
-        debug(self._TAG, "Get authentication data")
+        logger.debug("Get authentication data")
         template.close()
 
         self._resource_path = '/'.join(('../../static', 'messages.json'))
         template = pkg_resources.resource_stream(self._resource_package, self._resource_path)
         line = template.read().decode('utf-8')
         self._messages = json.loads(line)
-        debug(self._TAG, "Get messages for answers")
+        logger.debug("Get messages for answers")
         template.close()
 
     @property

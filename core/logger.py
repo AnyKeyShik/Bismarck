@@ -1,133 +1,110 @@
 # -*- coding: utf-8 -*-
 
-import datetime
+#   Copyright (c) 2020.
+#  #
+#   Created by AnyKeyShik Rarity
+#  #
+#   Telegram: @AnyKeyShik
+#   GitHub: https://github.com/AnyKeyShik
+#   E-mail: nikitav59@gmail.com
+
 import logging
-import os
-
-# Constants for logging
-_log_message_format = '%(levelname)s - %(asctime)-10s %(message)s'
-_message_format = 'Message "%s" from "%s" with answer "%s"'
-_message_log_filename = os.path.join(os.path.dirname(__file__), os.environ['BISMARCK_HOME'] + os.sep + "logs" + os.sep
-                                     + "bismark_" + datetime.datetime.now().strftime("%Y_%m_%d_%H-%M-%S") + ".log")
-
-# Init logging
-logging.basicConfig(format=_log_message_format, filename=_message_log_filename, filemode="w", level=logging.DEBUG)
-
-DEBUG_LOG = True
 
 
-def log_func(log_write=False):
-    """
-    Decorator for log function name
+class Logger(object):
+    def __init__(self, module_name='root'):
+        self._logger = logging.getLogger(module_name)
+        self._message_format = 'Message "%s" from "%s" with answer "%s"'
 
-    :param log_write: if True write in debug-log, else in info-log
-    :return: decorator
-    """
+    def log_func(self, func):
+        """
+        Decorator for log function name
+        :return: decorator
+        """
 
-    def decorator(func):
         def wrapper(*args, **kwargs):
-
-            if log_write and DEBUG_LOG:
-                logging.debug("-" * 3 + ">" + func.__name__ + "()")
-            else:
-                logging.info("-" * 3 + ">" + func.__name__ + "()")
-
+            self._logger.info("|" + "-" * 2 + ">" + func.__name__ + "()")
             return func(*args, **kwargs)
 
         return wrapper
 
-    return decorator
+    def class_construct(self, init):
+        """
+        Decorator for log class init in info-log
 
+        :param init: class __init__
+        :return: decorator
+        """
 
-def class_construct(init):
-    """
-    Decorator for log class init in info-log
+        def wrapper(*args, **kwargs):
+            self._logger.info("=>" + args[0].__class__.__name__ + " init")
+            init(*args, **kwargs)
 
-    :param init: class __init__
-    :return: decorator
-    """
+        return wrapper
 
-    def wrapper(*args, **kwargs):
-        logging.info("=>" + args[0].__class__.__name__ + " init")
-        init(*args, **kwargs)
+    def debug(self, message):
+        """
+        Write in debug-log
 
-    return wrapper
+        :param message: message for write
+        :return: None
+        :rtype: None
+        """
 
+        self._logger.debug("|" + "~" * 5 + ">" + str(message))
 
-def debug(tag, message):
-    """
-    Write in debug-log
+    def info(self, message):
+        """
+        Write in info-log
 
-    :param tag: tag for logging
-    :param message: message for write
-    :return: None
-    :rtype: None
-    """
+        :param message: message for write
+        :return: None
+        :rtype: None
+        """
 
-    if DEBUG_LOG:
-        logging.debug(str(tag) + ": " + "~" * 5 + ">" + str(message))
+        self._logger.info("|" + "~" * 5 + ">" + str(message))
 
+    def warning(self, message):
+        """
+        Write in warning-log
 
-def info(tag, message):
-    """
-    Write in info-log
+        :param message: message for write
+        :return: None
+        :rtype: None
+        """
 
-    :param tag: tag for logging
-    :param message: message for write
-    :return: None
-    :rtype: None
-    """
+        self._logger.warning("|" + "~" * 5 + ">" + str(message))
 
-    logging.info(str(tag) + ": " + "~" * 5 + ">" + str(message))
+    def error(self, message):
+        """
+        Write in error-log
 
+        :param message: message for write
+        :return: None
+        :rtype: None
+        """
 
-def warning(tag, message):
-    """
-    Write in warning-log
+        self._logger.error("|" + "~" * 5 + ">" + str(message))
 
-    :param tag: tag for logging
-    :param message: message for write
-    :return: None
-    :rtype: None
-    """
+    def critical(self, message):
+        """
+        Write in critical-log
 
-    logging.warning(str(tag) + ": " + "!" + "-" * 5 + "!" + ">" + str(message))
+        :param message: message for write
+        :return: None
+        :rtype: None
+        """
 
+        self._logger.critical("|" + "~" * 5 + ">" + str(message))
 
-def error(tag, message):
-    """
-    Write in error-log
+    def log_message(self, message, user, answer):
+        """
+        Write bot message for send in info-log
 
-    :param tag: tag for logging
-    :param message: message for write
-    :return: None
-    :rtype: None
-    """
+        :param message: user message text
+        :param user: user who sent message
+        :param answer: bot answer
+        :return: None
+        """
 
-    logging.error(str(tag) + ": " + "!" + "-" * 5 + "!" + ">" + str(message))
-
-
-def critical(tag, message):
-    """
-    Write in critical-log
-
-    :param tag: tag for logging
-    :param message: message for write
-    :return: None
-    :rtype: None
-    """
-
-    logging.critical(str(tag) + ": " + "!" * 5 + ">" + str(message))
-
-
-def log_message(message, user, answer):
-    """
-    Write bot message for send in info-log
-
-    :param message: user message text
-    :param user: user who sent message
-    :param answer: bot answer
-    :return: None
-    """
-
-    logging.info(_message_format % (message, user, answer))
+        self._logger.info(self._message_format % (message, user, answer))

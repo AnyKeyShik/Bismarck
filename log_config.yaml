@@ -1,0 +1,60 @@
+version: 1
+disable_existing_loggers: false
+
+formatters:
+  basic:
+    format: '%(levelname)s - %(asctime)s: %(message)s'
+
+handlers:
+  command_processor:
+    class: logging.FileHandler
+    formatter: basic
+    filename: "{path}/{name}.log"
+  text_processor:
+    class: logging.FileHandler
+    formatter: basic
+    filename: "{path}/{name}.log"
+  utils:
+    class: logging.FileHandler
+    formatter: basic
+    filename: "{path}/{name}.log"
+  kernel:
+    class: logging.FileHandler
+    formatter: basic
+    filename: "{path}/{name}.log"
+  social:
+    class: logging.FileHandler
+    formatter: basic
+    filename: "{path}/{name}.log"
+  root:
+    class: logging.FileHandler
+    formatter: basic
+    level: ERROR
+    filename: "{path}/main.log"
+
+loggers:
+  command_processor:
+    handlers: [command_processor, root]
+    level: "{level}"
+    propagate: no
+  text_processor:
+    handlers: [text_processor, root]
+    level: "{level}"
+    propagate: no
+  utils:
+    handlers: [utils, root]
+    level: "{level}"
+    propagate: no
+  kernel:
+    handlers: [kernel, root]
+    level: "{level}"
+    propagate: no
+  social:
+    handlers: [social, root]
+    level: "{level}"
+    propagate: no
+
+root:
+  level: ERROR
+  handlers: [root]
+
