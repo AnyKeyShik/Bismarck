@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 #   Copyright (c) 2020.
-#  #
+#
 #   Created by AnyKeyShik Rarity
-#  #
+#
 #   Telegram: @AnyKeyShik
 #   GitHub: https://github.com/AnyKeyShik
 #   E-mail: nikitag594@gmail.com
@@ -25,7 +25,7 @@ def is_words_similar(string, model):
     :rtype: bool
     """
 
-    if fuzz.ratio(string, model, score_cutoff=75, preprocess=False):
+    if fuzz.ratio(string, model, score_cutoff=75):
         return True
 
     return False
