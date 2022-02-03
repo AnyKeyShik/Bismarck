@@ -21,7 +21,7 @@ _logs_dir = os.path.join(_base_dir, _dir_name)
 try:
     os.mkdir(_logs_dir)
 except Exception:
-    exit(255)
+    print("Cannot create folder! Logs may be unavailable")
 
 _logs_level = os.environ['BISMARCK_LOGLEVEL']
 _module_names = ['command_processor', 'text_processor', 'utils', 'kernel', 'social']
