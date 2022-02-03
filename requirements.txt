@@ -1,6 +1,8 @@
-requests
+requests~=2.23.0
 vk_api
-anytree
+anytree~=2.8.0
 rapidfuzz
-pyyaml
+pyyaml~=5.3.1
+psycopg2
+
 PySocks
