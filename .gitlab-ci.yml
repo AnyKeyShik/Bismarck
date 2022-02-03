@@ -20,5 +20,6 @@ test:
     BISMARCK_HOME: '/builds/AnyKeyShik/Bismarck'
     BISMARCK_LOGLEVEL: 'INFO'
   script:
+    - mkdir logs
     - python3 -m unittest discover -s tests -t .
 
