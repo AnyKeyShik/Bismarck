@@ -1,13 +1,21 @@
 # -*- coding: utf-8 -*-
 
+#   Copyright (c) 2020.
+#
+#   Created by AnyKeyShik Rarity
+#
+#   Telegram: @AnyKeyShik
+#   GitHub: https://github.com/AnyKeyShik
+#   E-mail: nikitag594@gmail.com
+
 import socket
 
 import socks
 
-from core.logger import DEBUG_LOG, log_func
+from . import logger
 
 
-@log_func(log_write=DEBUG_LOG)
+@logger.log_func
 def create_connection(address):
     """
     Create connection with custom sock
@@ -22,7 +30,7 @@ def create_connection(address):
     return sock
 
 
-@log_func(log_write=DEBUG_LOG)
+@logger.log_func
 def config(ip, port):
     """
     Config proxy
@@ -36,7 +44,7 @@ def config(ip, port):
     socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, ip, port)
 
 
-@log_func(log_write=DEBUG_LOG)
+@logger.log_func
 def patch():
     """
     Patch the socket module

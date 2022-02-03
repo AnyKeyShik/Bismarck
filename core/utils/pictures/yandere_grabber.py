@@ -1,6 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from core.logger import class_construct
+#   Copyright (c) 2020.
+#
+#   Created by AnyKeyShik Rarity
+#
+#   Telegram: @AnyKeyShik
+#   GitHub: https://github.com/AnyKeyShik
+#   E-mail: nikitag594@gmail.com
+
+from core.utils import logger
 from .grabber import Grabber
 
 
@@ -11,6 +19,6 @@ class YandereGrabber(Grabber):
 
     _url = None
 
-    @class_construct
+    @logger.class_construct
     def __init__(self):
         self._url = "https://yande.re/post.json?tags=%s+rating:%s+order:random&limit=1"

@@ -1,12 +1,18 @@
 # -*- coding: utf-8 -*-
 
+#   Copyright (c) 2020.
+#
+#   Created by AnyKeyShik Rarity
+#
+#   Telegram: @AnyKeyShik
+#   GitHub: https://github.com/AnyKeyShik
+#   E-mail: nikitag594@gmail.com
+
 import re
 
 from rapidfuzz import fuzz
 
-from core.logger import log_func, debug, DEBUG_LOG
-
-TAG = "StringProcessor"
+from . import logger
 
 
 def is_words_similar(string, model):
@@ -19,13 +25,13 @@ def is_words_similar(string, model):
     :rtype: bool
     """
 
-    if fuzz.ratio(string, model, score_cutoff=75, preprocess=False):
+    if fuzz.ratio(string, model, score_cutoff=75):
         return True
 
     return False
 
 
-@log_func(log_write=DEBUG_LOG)
+@logger.log_func
 def prepare_msg(raw_message):
     """
     Prepare user message for processing
@@ -43,7 +49,7 @@ def prepare_msg(raw_message):
     raw_message = re.sub('[^а-яА-Яa-zA-Z0-9\\s\\-]+', '', raw_message)
 
     split_message = raw_message.split(" ")
-    debug(TAG, "Split message: " + str(split_message))
+    logger.debug("Split message: " + str(split_message))
 
     message = []
     for msg in [x.split("-") for x in split_message]:

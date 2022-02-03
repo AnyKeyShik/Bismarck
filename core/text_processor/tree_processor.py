@@ -1,32 +1,33 @@
 # -*- coding: utf-8 -*-
 
+#   Copyright (c) 2020.
+#
+#   Created by AnyKeyShik Rarity
+#
+#   Telegram: @AnyKeyShik
+#   GitHub: https://github.com/AnyKeyShik
+#   E-mail: nikitag594@gmail.com
+
 from anytree import Node
 
 from core.exceptions import TagNotFoundException, RatingNotFoundException, CommandNotFoundException
-from core.logger import class_construct, info, debug, warning, log_func, DEBUG_LOG
 from core.utils.json_handler import json_handler
+from . import logger
 from .string_processor import is_words_similar, prepare_msg
 
 
 class TreeProcessor(object):
-    _tree = None
-    _message = None
-
-    _tags = None
-    _rating = None
-    _command = None
-    _argument = None
-
-    _TAG = "TreeProcessor"
-
-    @class_construct
+    @logger.class_construct
     def __init__(self):
         self._tree = None
+        self._message = None
+        self._tags = None
+        self._rating = None
 
         self._command = ""
         self._argument = []
 
-    @log_func(log_write=DEBUG_LOG)
+    @logger.log_func
     def _is_command_part(self, string):
         """
         Check string is command part
@@ -36,16 +37,16 @@ class TreeProcessor(object):
         :rtype: bool
         """
 
-        debug(self._TAG, "Check if string '" + string + "' is a command part")
+        logger.debug("Check if string '" + string + "' is a command part")
 
         for j in json_handler.commands_parts:
             if is_words_similar(string, j):
-                info(self._TAG, "String '" + string + "' is a command part")
+                logger.info("String '" + string + "' is a command part")
                 return True
 
         return False
 
-    @log_func(log_write=DEBUG_LOG)
+    @logger.log_func
     def _is_tag_part(self, string):
         """
         Check string is tag part
@@ -55,16 +56,16 @@ class TreeProcessor(object):
         :rtype: bool
         """
 
-        debug(self._TAG, "Check if string '" + string + "' is a tag part")
+        logger.debug("Check if string '" + string + "' is a tag part")
 
         for j in json_handler.tags_parts:
             if is_words_similar(string, j):
-                info(self._TAG, "String '" + string + "' is a tag part")
+                logger.info("String '" + string + "' is a tag part")
                 return True
 
         return False
 
-    @log_func(log_write=DEBUG_LOG)
+    @logger.log_func
     def _is_ignore(self, string):
         """
         Check string is ignored word
@@ -74,16 +75,16 @@ class TreeProcessor(object):
         :rtype: bool
         """
 
-        debug(self._TAG, "Check if string '" + string + "' is an ignored word")
+        logger.debug("Check if string '" + string + "' is an ignored word")
 
         for j in json_handler.ignored:
             if is_words_similar(string, j):
-                info(self._TAG, "String '" + string + "' is an ignored word")
+                logger.info("String '" + string + "' is an ignored word")
                 return True
 
         return False
 
-    @log_func(log_write=DEBUG_LOG)
+    @logger.log_func
     def _get_command(self, string):
         """
         Get correct command name
@@ -95,17 +96,17 @@ class TreeProcessor(object):
 
         correct_command = ""
 
-        debug(self._TAG, "Get correct name for '" + string + "' as a command")
+        logger.debug("Get correct name for '" + string + "' as a command")
 
         for j in json_handler.commands:
             if is_words_similar(string, j):
-                info(self._TAG, "Correct name for '" + string + "' as command is '" + j + "'")
+                logger.info("Correct name for '" + string + "' as command is '" + j + "'")
                 correct_command = j
                 break
 
         return correct_command
 
-    @log_func(log_write=DEBUG_LOG)
+    @logger.log_func
     def _get_tag(self, string):
         """
         Get correct tag name
@@ -117,17 +118,17 @@ class TreeProcessor(object):
 
         correct_tag = ""
 
-        debug(self._TAG, "Get correct name for '" + string + "' as a tag")
+        logger.debug("Get correct name for '" + string + "' as a tag")
 
         for j in json_handler.tags:
             if is_words_similar(string, j):
-                info(self._TAG, "Correct name for '" + string + "' as a tag is '" + j + "'")
+                logger.info("Correct name for '" + string + "' as a tag is '" + j + "'")
                 correct_tag = j
                 break
 
         return correct_tag
 
-    @log_func(log_write=DEBUG_LOG)
+    @logger.log_func
     def _get_rating(self, string):
         """
         Get correct rating name
@@ -137,18 +138,18 @@ class TreeProcessor(object):
         :rtype: str
         """
 
-        debug(self._TAG, "Get correct name for '" + string + "' as a rating name")
+        logger.debug("Get correct name for '" + string + "' as a rating name")
 
         correct_rating = ""
 
         for j in json_handler.ratings:
             if is_words_similar(string, j):
-                info(self._TAG, "Correct name for '" + string + "' as a rating name is '" + j + "'")
+                logger.info("Correct name for '" + string + "' as a rating name is '" + j + "'")
                 correct_rating = j
 
         return correct_rating
 
-    @log_func()
+    @logger.log_func
     def create_message_tree(self, raw_message):
         """
         Create tree for input message
@@ -160,15 +161,15 @@ class TreeProcessor(object):
 
         self._tree = Node("Message")
 
-        info(self._TAG, "Get message '" + raw_message + "'")
+        logger.info("Get message '" + raw_message + "'")
         self._message = prepare_msg(raw_message)
-        debug(self._TAG, "Processed message: " + str(self._message))
+        logger.debug("Processed message: " + str(self._message))
 
         tag_parent = self._tree
         command_parent = self._tree
 
         for i in range(len(self._message)):
-            debug(self._TAG, "Processing '" + self._message[i] + "' message part")
+            logger.debug("Processing '" + self._message[i] + "' message part")
 
             if not (self._is_ignore(self._message[i])):
                 if self._is_tag_part(self._message[i]):
@@ -180,7 +181,7 @@ class TreeProcessor(object):
                         command_parent = Node(self._message[i], parent=command_parent)
                         tag_parent = self._tree
                 else:
-                    debug(self._TAG, "'" + self._message[i] + "' message part is not part of tag or command")
+                    logger.debug("'" + self._message[i] + "' message part is not part of tag or command")
 
                     command_parent = self._tree
                     tag_parent = self._tree
@@ -188,7 +189,7 @@ class TreeProcessor(object):
             else:
                 continue
 
-    @log_func()
+    @logger.log_func
     def parse_message_tree(self):
         """
         Parse tree and grab rating, tags, command and argument from message
@@ -202,41 +203,41 @@ class TreeProcessor(object):
         command = ""
 
         for i in self._tree.children:
-            debug(self._TAG, "Process node '" + i.name + "'")
+            logger.debug("Process node '" + i.name + "'")
 
             if i.children == ():
                 arg_part = str(i.name)
 
-                debug(self._TAG, "Node '" + i.name + "' has no child. Get correct name as tag")
+                logger.debug("Node '" + i.name + "' has no child. Get correct name as tag")
                 name = self._get_tag(str(i.name))  # Process as tag and get correct name if it exist
 
                 # If tag correct name doesn't exist
                 if name == "":
-                    debug(self._TAG, "Node '" + i.name + "' has no child. Get correct name as command")
+                    logger.debug("Node '" + i.name + "' has no child. Get correct name as command")
                     name = self._get_command(str(i.name))  # Process as command and get correct name if it exist
 
                     # If command correct name doesn't exist
                     if name == "":
-                        debug(self._TAG, "Node '" + i.name + "' has no child. Get correct name as rating")
+                        logger.debug("Node '" + i.name + "' has no child. Get correct name as rating")
                         name = self._get_rating(str(i.name))  # Process as rating and get correct name if it exist
 
                         if name == "":
-                            warning(self._TAG, "Node '" + i.name + "' is not a tag, rating or command")
+                            logger.warning("Node '" + i.name + "' is not a tag, rating or command")
                         else:
-                            debug(self._TAG, "Set rating: '" + name + "'")
+                            logger.debug("Set rating: '" + name + "'")
                             rating = name
 
                     else:
-                        debug(self._TAG, "Set command: '" + name + "'")
+                        logger.debug("Set command: '" + name + "'")
                         command = name  # Add command to return
                         arg_part = ""
 
                 else:
-                    debug(self._TAG, "Add tag: '" + name + "'")
+                    logger.debug("Add tag: '" + name + "'")
                     tags.append(name)  # Add tag to return
 
             else:
-                debug(self._TAG, "Node '" + i.name + "' has child. Get it")
+                logger.debug("Node '" + i.name + "' has child. Get it")
 
                 # Get full string from parent and children
                 child_name = i.name + " "
@@ -247,23 +248,23 @@ class TreeProcessor(object):
                 child_name = child_name[:len(child_name) - 1]
                 arg_part = child_name
 
-                debug(self._TAG, "Nodes '" + child_name + "' has no child. Get correct name as tag")
+                logger.debug("Nodes '" + child_name + "' has no child. Get correct name as tag")
                 name = self._get_tag(child_name)  # Process as tag and get correct name if it exist
 
                 # If tag correct name doesn't exist
                 if name == "":
-                    debug(self._TAG, "Nodes '" + child_name + "' has no child. Get correct name as command")
+                    logger.debug("Nodes '" + child_name + "' has no child. Get correct name as command")
                     name = self._get_command(child_name)  # Process as command and get correct name if it exist
 
                     if name == "":
-                        warning(self._TAG, "Nodes '" + child_name + "' is not a tag, rating or command")
+                        logger.warning("Nodes '" + child_name + "' is not a tag, rating or command")
                     else:
-                        debug(self._TAG, "Set command: '" + name + "'")
+                        logger.debug("Set command: '" + name + "'")
                         command = name  # Add command to return
                         arg_part = ""
 
                 else:
-                    debug(self._TAG, "Add tag: '" + name + "'")
+                    logger.debug("Add tag: '" + name + "'")
                     tags.append(name)  # Add tag to return
 
             if arg_part != "":
@@ -273,7 +274,7 @@ class TreeProcessor(object):
         self._command = command
         self._rating = rating
 
-    @log_func()
+    @logger.log_func
     def get_tags(self):
         """
         Get tags what contain in user message
@@ -289,7 +290,7 @@ class TreeProcessor(object):
         except TagNotFoundException:
             return [""]
 
-    @log_func()
+    @logger.log_func
     def get_rating(self):
         """
         Get rating what contains in user message
@@ -305,7 +306,7 @@ class TreeProcessor(object):
         except RatingNotFoundException:
             return ""
 
-    @log_func()
+    @logger.log_func
     def get_commands(self):
         """
         Get command what contain in user message
@@ -323,7 +324,7 @@ class TreeProcessor(object):
         except CommandNotFoundException:
             return "", ""
 
-    @log_func()
+    @logger.log_func
     def get_message(self):
         """
         Get split user message
@@ -334,7 +335,7 @@ class TreeProcessor(object):
 
         return self._message
 
-    @log_func()
+    @logger.log_func
     def get_tree(self):
         """
         Get message tree
