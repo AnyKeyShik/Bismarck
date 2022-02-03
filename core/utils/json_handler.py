@@ -61,12 +61,15 @@ class JsonHandler(object):
         logger.debug("Get constants")
         template.close()
 
-        self._resource_path = '/'.join(('../../static', 'auth_consts.json'))
-        template = pkg_resources.resource_stream(self._resource_package, self._resource_path)
-        line = template.read().decode('utf-8')
-        self._auth_consts = json.loads(line)
-        logger.debug("Get authentication data")
-        template.close()
+        try:
+            self._resource_path = '/'.join(('../../static', 'auth_consts.json'))
+            template = pkg_resources.resource_stream(self._resource_package, self._resource_path)
+            line = template.read().decode('utf-8')
+            self._auth_consts = json.loads(line)
+            logger.debug("Get authentication data")
+            template.close()
+        except FileNotFoundError:
+            print("No authentication data was found. Work is possible in local-mode only")
 
         self._resource_path = '/'.join(('../../static', 'messages.json'))
         template = pkg_resources.resource_stream(self._resource_package, self._resource_path)
